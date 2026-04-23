@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <!-- Background -->
+  <rect width="800" height="300" fill="#eef2f6"/>
+
+  <!-- Shadow -->
+  <ellipse cx="400" cy="260" rx="340" ry="14" fill="#c4cdd9" opacity="0.4"/>
+
+  <!-- Main body outline (top-down view, front = left, rear = right) -->
+  <!-- Roof/cabin -->
+  <rect x="280" y="105" width="230" height="90" rx="15" fill="#5a6b82"/>
+
+  <!-- Windshield (front) -->
+  <polygon points="265,120 290,108 290,192 265,180" fill="#a8b8cc" opacity="0.85"/>
+  <!-- Rear glass -->
+  <polygon points="535,108 510,120 510,180 535,192" fill="#a8b8cc" opacity="0.85"/>
+
+  <!-- Left side body (top of image - passenger side when front is left) -->
+  <path d="M 90,95 Q 80,85 95,80 L 705,80 Q 720,85 710,95 Z" fill="#6b7d96"/>
+  <!-- Right side body (bottom of image - driver side) -->
+  <path d="M 90,205 Q 80,215 95,220 L 705,220 Q 720,215 710,205 Z" fill="#6b7d96"/>
+
+  <!-- Front bumper (left) -->
+  <path d="M 70,110 Q 60,150 70,190 L 90,190 L 90,110 Z" fill="#8695ac"/>
+  <!-- Rear bumper (right) -->
+  <path d="M 730,110 Q 740,150 730,190 L 710,190 L 710,110 Z" fill="#8695ac"/>
+
+  <!-- Hood -->
+  <rect x="90" y="110" width="175" height="80" fill="#7b8ba3" rx="3"/>
+  <!-- Trunk -->
+  <rect x="535" y="110" width="175" height="80" fill="#7b8ba3" rx="3"/>
+
+  <!-- Wheels (4) -->
+  <ellipse cx="155" cy="95" rx="22" ry="12" fill="#2a2f38"/>
+  <ellipse cx="155" cy="205" rx="22" ry="12" fill="#2a2f38"/>
+  <ellipse cx="620" cy="95" rx="22" ry="12" fill="#2a2f38"/>
+  <ellipse cx="620" cy="205" rx="22" ry="12" fill="#2a2f38"/>
+
+  <!-- Headlights (front left) -->
+  <rect x="72" y="120" width="18" height="16" rx="3" fill="#e8e4d0" opacity="0.9"/>
+  <rect x="72" y="164" width="18" height="16" rx="3" fill="#e8e4d0" opacity="0.9"/>
+
+  <!-- Taillights (rear right) -->
+  <rect x="710" y="120" width="18" height="16" rx="3" fill="#b04545" opacity="0.9"/>
+  <rect x="710" y="164" width="18" height="16" rx="3" fill="#b04545" opacity="0.9"/>
+
+  <!-- Side mirrors -->
+  <rect x="268" y="78" width="14" height="6" rx="2" fill="#4a5668"/>
+  <rect x="268" y="216" width="14" height="6" rx="2" fill="#4a5668"/>
+
+  <!-- Door lines -->
+  <line x1="330" y1="80" x2="330" y2="95" stroke="#4a5668" stroke-width="1"/>
+  <line x1="330" y1="205" x2="330" y2="220" stroke="#4a5668" stroke-width="1"/>
+  <line x1="420" y1="80" x2="420" y2="95" stroke="#4a5668" stroke-width="1"/>
+  <line x1="420" y1="205" x2="420" y2="220" stroke="#4a5668" stroke-width="1"/>
+  <line x1="510" y1="80" x2="510" y2="95" stroke="#4a5668" stroke-width="1"/>
+  <line x1="510" y1="205" x2="510" y2="220" stroke="#4a5668" stroke-width="1"/>
+
+  <!-- Front/rear indicators -->
+  <text x="80" y="250" text-anchor="middle" fill="#7a8599" font-family="Arial" font-size="10" font-weight="600">FRONT</text>
+  <text x="720" y="250" text-anchor="middle" fill="#7a8599" font-family="Arial" font-size="10" font-weight="600">REAR</text>
+</svg>

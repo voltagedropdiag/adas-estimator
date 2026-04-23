@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>VDD ADAS Calibration Estimator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f4f5f7;color:#222;font-size:14px}
+.wrap{max-width:920px;margin:0 auto;padding:1rem}
+.hdr{background:#fff;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #e0e0e0}
+.hdr-title{font-size:20px;font-weight:700;color:#1a1a1a}
+.hdr-sub{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.step-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#666;text-transform:uppercase;margin:1rem 0 6px 0}
+.card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem;margin-bottom:.75rem}
+input,select{font-size:13px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;background:#fff;color:#222;width:100%;outline:none}
+input:focus,select:focus{border-color:#185FA5}
+.row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.btn-sm{padding:8px 14px;font-size:12px;white-space:nowrap;border:1px solid #ccc;border-radius:6px;background:#f4f5f7;cursor:pointer;color:#333;font-weight:600}
+.btn-sm:hover{background:#e8e8e8}
+.vin-status{font-size:12px;margin-top:4px;min-height:16px}
+.vin-ok{color:#1D9E75}.vin-err{color:#E24B4A}.vin-loading{color:#888}
+.divider{font-size:11px;color:#aaa;text-align:center;margin:8px 0}
+.veh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.car-wrap{position:relative;width:100%;max-width:460px;margin:0 auto}
+.car-wrap img{width:100%;display:block;border-radius:8px;background:#f0f0f0}
+.zone{position:absolute;cursor:pointer;border-radius:6px;border:2px solid rgba(55,138,221,0.4);background:rgba(55,138,221,0.08);transition:all .15s}
+.zone:hover{background:rgba(55,138,221,0.22);border-color:rgba(55,138,221,0.8)}
+.zone.hit{background:rgba(226,75,74,0.28);border-color:#E24B4A;box-shadow:0 0 0 3px rgba(226,75,74,0.2)}
+.zone-tip{position:absolute;background:rgba(20,20,20,0.85);color:#fff;font-size:10px;padding:2px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;left:50%;transform:translateX(-50%);bottom:calc(100% + 4px);opacity:0;transition:opacity .1s;z-index:10}
+.zone:hover .zone-tip,.zone.hit .zone-tip{opacity:1}
+.legend{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:11px;color:#666}
+.leg-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle}
+.sel-zones{font-size:12px;color:#666;text-align:center;margin-top:6px;min-height:16px}
+.sys-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+.sys-tog{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid #e0e0e0;border-radius:6px;cursor:pointer;font-size:12px;color:#555;transition:all .12s;user-select:none}
+.sys-tog.on{border-color:#1D9E75;color:#222;background:rgba(29,158,117,0.07)}
+.sys-tog.off{opacity:.45;text-decoration:line-through}
+.pip{width:9px;height:9px;border-radius:50%;background:#ccc;flex-shrink:0;margin-left:6px}
+.sys-tog.on .pip{background:#1D9E75}
+.btn-gen{width:100%;padding:12px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn-gen:hover{background:#0C447C}
+.cal-item{padding:12px 15px;border-left:3px solid #E24B4A;margin-bottom:10px;border-radius:0 7px 7px 0;background:#fdf6f6}
+.cal-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+.cal-name{font-weight:700;color:#1a1a1a;font-size:14px}
+.cal-loc{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px}
+.cal-eq{font-size:11px;color:#a66a2a;margin-top:3px;font-style:italic}
+.badge-req{font-size:10px;padding:3px 10px;border-radius:11px;background:#E24B4A;color:#fff;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;white-space:nowrap}
+.cal-triggers{margin-top:8px;padding:10px 14px;background:#fff;border:1px solid #e8e8ec;border-radius:6px;font-size:13px;line-height:1.55}
+.cal-trig-lead{color:#444;margin-bottom:6px;font-weight:600}
+.cal-triggers ul{margin:0;padding-left:18px}
+.cal-triggers li{color:#333;margin-bottom:3px}
+.cal-note{font-size:11.5px;color:#555;margin-top:8px;font-style:italic;padding:6px 10px;background:#f8f9fb;border-radius:4px}
+.cal-addnotes{margin-top:8px;font-size:12px;color:#555}
+.cal-addnotes ul{padding-left:18px}
+.cal-source{font-size:11px;color:#888;margin-top:10px;padding-top:8px;border-top:1px solid #eee}
+.cal-source b{color:#555}
+.no-data-banner{padding:14px;background:#fff8e1;border:1px solid #ffcc80;border-radius:6px;color:#6b4a00;font-size:13px;margin-bottom:12px;line-height:1.5}
+.no-data-banner b{color:#4a3300}
+.result-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee}
+.result-count{font-size:14px;font-weight:700;color:#1a1a1a}
+.btn-pdf{padding:8px 14px;font-size:12px;border:1px solid #185FA5;color:#185FA5;background:#fff;border-radius:6px;cursor:pointer;font-weight:700}
+.btn-pdf:hover{background:#eef3fb}
+.fine-print{font-size:11px;color:#777;margin-top:14px;padding-top:10px;border-top:1px solid #eee;line-height:1.5}
+.veh-match{font-size:12px;margin-top:6px;padding:7px 10px;border-radius:5px;line-height:1.4}
+.veh-match.ok{color:#1D9E75;background:#f0f9f4;border-left:3px solid #1D9E75}
+.veh-match.warn{color:#a66a2a;background:#fff8e1;border-left:3px solid #EF9F27}
+.sys-note{font-size:11.5px;color:#666;margin-bottom:8px;font-style:italic;padding:6px 10px;background:#f4f7fb;border-radius:5px}
+.veh-header{padding:12px 14px;background:#f0f4fa;border-left:3px solid #185FA5;border-radius:4px;margin-bottom:14px}
+.veh-header b{color:#1a1a1a}
+.loading{text-align:center;color:#888;padding:1rem;font-size:12px}
+@media print{
+  .btn-gen,.btn-sm,.btn-pdf,.zone,.step-lbl,#step1-card,#step2-card,#step3-card{display:none}
+  body{background:#fff;font-size:11px}
+  .card{border:none;padding:4px 0}
+  .cal-item{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="hdr-title">ADAS Calibration Estimator</div>
+  <div class="hdr-sub">OEM Scan Tools &amp; Software · Mobile ADAS</div>
+</div>
+
+<div class="step-lbl">Step 1 — Vehicle identification</div>
+<div class="card" id="step1-card">
+  <div class="row">
+    <input id="vinIn" placeholder="Enter 17-character VIN" maxlength="17" style="flex:1;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"/>
+    <button class="btn-sm" onclick="decodeVin()">Decode VIN</button>
+  </div>
+  <div class="vin-status" id="vinStatus"></div>
+  <div class="divider">— or select manually —</div>
+  <div class="veh-grid">
+    <select id="yearSel" onchange="onVehicleChanged()"><option value="">Year</option></select>
+    <select id="makeSel" onchange="populateModels();onVehicleChanged()"><option value="">Make</option></select>
+    <select id="modelSel" onchange="onVehicleChanged()"><option value="">Model</option></select>
+  </div>
+  <div id="vehDetails" style="font-size:11px;color:#666;margin-top:8px;display:none"></div>
+  <div id="vehMatch" style="display:none"></div>
+</div>
+
+<div class="step-lbl">Step 2 — Click damage zones on vehicle</div>
+<div class="card" id="step2-card">
+  <div class="car-wrap" id="carWrap">
+    <img id="carImg" alt="Vehicle top-down" onload="buildZones()" src="car.svg" onerror="this.src='data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 300\'><rect width=\'800\' height=\'300\' fill=\'%23e8edf2\'/><g fill=\'%23b8c5d8\' stroke=\'%237a8599\' stroke-width=\'1.5\'><rect x=\'70\' y=\'90\' width=\'660\' height=\'120\' rx=\'25\'/><rect x=\'90\' y=\'60\' width=\'620\' height=\'35\' rx=\'8\' fill=\'%23a8b5c8\'/><rect x=\'90\' y=\'205\' width=\'620\' height=\'35\' rx=\'8\' fill=\'%23a8b5c8\'/><rect x=\'275\' y=\'115\' width=\'250\' height=\'70\' fill=\'%23889aad\' rx=\'10\'/></g><text x=\'400\' y=\'158\' text-anchor=\'middle\' fill=\'%23445\' font-family=\'Arial\' font-size=\'13\' font-weight=\'600\'>Vehicle top-down view</text></svg>')"/>
+    <div id="zonesDiv"></div>
+  </div>
+  <div class="legend">
+    <span><span class="leg-dot" style="background:rgba(55,138,221,0.5)"></span>Click to mark damage</span>
+    <span><span class="leg-dot" style="background:#E24B4A"></span>Damage selected</span>
+  </div>
+  <div class="sel-zones" id="selZones">No damage zones selected</div>
+</div>
+
+<div class="step-lbl">Step 3 — Confirm systems on this vehicle</div>
+<div class="card" id="step3-card">
+  <div class="sys-note" id="sysNote">Toggle OFF any system not installed. Verify with visual inspection or VIN build data. NHTSA data is partial — many trim-dependent systems aren't covered.</div>
+  <div class="sys-grid" id="sysGrid">
+    <div class="sys-tog on" data-sys="front-camera" onclick="toggleSys(this)"><span>Forward-facing camera</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="front-radar" onclick="toggleSys(this)"><span>Front radar / ACC</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="bsd" onclick="toggleSys(this)"><span>Blind spot monitoring</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="rear-camera" onclick="toggleSys(this)"><span>Rear backup camera</span><span class="pip"></span></div>
+    <div class="sys-tog off" data-sys="front-corner-radar" onclick="toggleSys(this)"><span>Front corner radar</span><span class="pip"></span></div>
+    <div class="sys-tog off" data-sys="surround" onclick="toggleSys(this)"><span>Surround view / 360°</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="park-assist" onclick="toggleSys(this)"><span>Park assist / sonar</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="occupant" onclick="toggleSys(this)"><span>Occupant classification</span><span class="pip"></span></div>
+    <div class="sys-tog on" data-sys="seat-belt" onclick="toggleSys(this)"><span>Seat belt</span><span class="pip"></span></div>
+    <div class="sys-tog off" data-sys="other" onclick="toggleSys(this)"><span>HUD / other</span><span class="pip"></span></div>
+  </div>
+</div>
+
+<button class="btn-gen" onclick="generateReport()">Generate Calibration Report</button>
+
+<div id="resultsSection" style="display:none;margin-top:1.5rem">
+  <div class="step-lbl">Required calibrations</div>
+  <div class="card">
+    <div class="result-hdr">
+      <div class="result-count" id="resultCount"></div>
+      <button class="btn-pdf" onclick="printReport()">Print / Save PDF</button>
+    </div>
+    <div id="vehHeader"></div>
+    <div id="calList"></div>
+    <div class="fine-print" id="finePrint"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ============================================================================
+// MAKES INDEX — which JSON files to load and which models/brands each covers
+// Edit makes-index.json to add new makes. The HTML code below never needs editing.
+// ============================================================================
+
+// Models lookup for the manual dropdown — keyed by brand name (not make-file name)
+const MODELS_BY_BRAND = {
+  Acura: ['MDX','RDX','TLX','ILX','Integra'],
+  Audi: ['A3','A4','A5','A6','A7','A8','Q3','Q5','Q7','Q8','e-tron','S4','S5'],
+  BMW: ['1 Series','2 Series','3 Series','4 Series','5 Series','7 Series','8 Series','X1','X2','X3','X4','X5','X6','X7','i3','i4','iX','M3','M5'],
+  Buick: ['Encore','Encore GX','Enclave','Envision','Envista'],
+  Cadillac: ['CT4','CT5','XT4','XT5','XT6','Escalade','Escalade ESV','Lyriq'],
+  Chevrolet: ['Silverado','Silverado HD','Malibu','Equinox','Traverse','Tahoe','Suburban','Colorado','Blazer','Camaro','Trax','Trailblazer','Bolt'],
+  Chrysler: ['Pacifica','300','Voyager'],
+  Dodge: ['Charger','Challenger','Durango','Hornet'],
+  Ford: ['F-150','F-250','F-350','Mustang','Explorer','Escape','Edge','Bronco','Bronco Sport','Expedition','Ranger','Maverick','Mustang Mach-E','Transit'],
+  GMC: ['Sierra','Sierra HD','Terrain','Yukon','Yukon XL','Canyon','Acadia','Hummer EV'],
+  Genesis: ['G70','G80','G90','GV60','GV70','GV80'],
+  Honda: ['Accord','Civic','CR-V','Pilot','Odyssey','Ridgeline','Passport','HR-V','Prologue'],
+  Hyundai: ['Sonata','Elantra','Tucson','Santa Fe','Palisade','Kona','Venue','Ioniq 5','Ioniq 6'],
+  Infiniti: ['Q50','Q60','QX50','QX55','QX60','QX80'],
+  Jaguar: ['F-Pace','E-Pace','I-Pace','XF','XE'],
+  Jeep: ['Grand Cherokee','Wrangler','Cherokee','Compass','Gladiator','Renegade','Wagoneer','Grand Wagoneer'],
+  Kia: ['K5','Forte','Sportage','Telluride','Sorento','Soul','Carnival','EV6','EV9','Niro'],
+  'Land Rover': ['Range Rover','Range Rover Sport','Range Rover Velar','Range Rover Evoque','Discovery','Discovery Sport','Defender'],
+  Lexus: ['ES','IS','LS','RX','NX','GX','LX','UX','RZ'],
+  Lincoln: ['Navigator','Aviator','Corsair','Nautilus'],
+  Mazda: ['Mazda3','Mazda6','CX-3','CX-30','CX-5','CX-50','CX-9','CX-90','MX-5 Miata'],
+  'Mercedes-Benz': ['A-Class','C-Class','E-Class','S-Class','CLA','CLS','GLA','GLB','GLC','GLE','GLS','EQS','EQE'],
+  Mitsubishi: ['Outlander','Outlander Sport','Eclipse Cross','Mirage','Mirage G4'],
+  Nissan: ['Altima','Sentra','Versa','Rogue','Rogue Sport','Pathfinder','Frontier','Armada','Murano','Maxima','Kicks','Ariya','Leaf'],
+  Ram: ['1500','2500','3500','ProMaster','ProMaster City'],
+  Subaru: ['Outback','Forester','Impreza','Legacy','Crosstrek','Ascent','BRZ','WRX','Solterra'],
+  Tesla: ['Model 3','Model Y','Model S','Model X','Cybertruck'],
+  Toyota: ['Camry','Corolla','Corolla Cross','RAV4','Highlander','Grand Highlander','Tacoma','Tundra','4Runner','Sequoia','Sienna','Venza','Prius','Crown','bZ4X'],
+  Volkswagen: ['Jetta','Passat','Tiguan','Atlas','Atlas Cross Sport','Golf','GTI','ID.4','Taos'],
+  Volvo: ['S60','S90','V60','V90','XC40','XC60','XC90','C40','EX30','EX90'],
+};
+
+// Which JSON file to load for each brand
+const BRAND_TO_MAKE_FILE = {
+  Acura:'honda', Honda:'honda',
+  Audi:'volkswagen', Volkswagen:'volkswagen',
+  BMW:'bmw', MINI:'bmw',
+  Buick:'gm', Cadillac:'gm', Chevrolet:'gm', GMC:'gm',
+  Chrysler:'stellantis', Dodge:'stellantis', Jeep:'stellantis', Ram:'stellantis',
+  Ford:'ford', Lincoln:'ford',
+  Infiniti:'nissan', Mitsubishi:'nissan', Nissan:'nissan',
+  Lexus:'toyota', Toyota:'toyota',
+  Mazda:'mazda',
+  'Mercedes-Benz':'mercedes-benz',
+  Subaru:'subaru',
+};
+
+// ============================================================================
+// ZONE DEFINITIONS
+// ============================================================================
+const ZONE_DEFS = [
+  {id:'front-bumper', label:'Front bumper', l:7,  t:18, w:7,  h:62},
+  {id:'windshield',   label:'Windshield',   l:34, t:20, w:10, h:58},
+  {id:'liftgate',     label:'Liftgate',     l:78, t:20, w:8,  h:58},
+  {id:'rear-bumper',  label:'Rear bumper',  l:87, t:18, w:7,  h:62},
+  {id:'rf-fender',    label:'RF fender',    l:14, t:2,  w:18, h:18},
+  {id:'rf-door',      label:'RF door',      l:33, t:2,  w:19, h:18},
+  {id:'rr-door',      label:'RR door',      l:52, t:2,  w:17, h:18},
+  {id:'rq-panel',     label:'R quarter',    l:69, t:2,  w:14, h:18},
+  {id:'lf-fender',    label:'LF fender',    l:14, t:80, w:18, h:18},
+  {id:'lf-door',      label:'LF door',      l:33, t:80, w:19, h:18},
+  {id:'lr-door',      label:'LR door',      l:52, t:80, w:17, h:18},
+  {id:'lq-panel',     label:'L quarter',    l:69, t:80, w:14, h:18},
+];
+
+// ============================================================================
+// STATE
+// ============================================================================
+let activeZones = new Set();
+let activeSystems = new Set();
+let currentYMM = null;
+let currentMakeData = null;
+const makeCache = {};  // filename -> parsed JSON
+
+document.querySelectorAll('.sys-tog').forEach(el=>{if(el.classList.contains('on'))activeSystems.add(el.dataset.sys);});
+
+// ============================================================================
+// INIT
+// ============================================================================
+for(let y=2026;y>=2010;y--){
+  const o=document.createElement('option');o.value=y;o.textContent=y;
+  document.getElementById('yearSel').appendChild(o);
+}
+(function populateMakes(){
+  const s=document.getElementById('makeSel');
+  Object.keys(MODELS_BY_BRAND).sort().forEach(m=>{
+    const o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o);
+  });
+})();
+
+function populateModels(){
+  const s=document.getElementById('modelSel');s.innerHTML='<option value="">Model</option>';
+  const m=document.getElementById('makeSel').value;
+  (MODELS_BY_BRAND[m]||[]).forEach(mo=>{
+    const o=document.createElement('option');o.value=mo;o.textContent=mo;s.appendChild(o);
+  });
+}
+
+// ============================================================================
+// LOAD MAKE DATA (fetches JSON file for the brand)
+// ============================================================================
+async function loadMakeData(brand){
+  const file = BRAND_TO_MAKE_FILE[brand];
+  if(!file) return null;
+  if(makeCache[file]) return makeCache[file];
+  try{
+    const r = await fetch('makes/'+file+'.json');
+    if(!r.ok) throw new Error('not found');
+    const data = await r.json();
+    makeCache[file] = data;
+    return data;
+  }catch(e){
+    console.warn('Could not load make file:', file, e);
+    return null;
+  }
+}
+
+// ============================================================================
+// VIN DECODE (NHTSA — free, partial ADAS data)
+// ============================================================================
+async function decodeVin(){
+  const vin=document.getElementById('vinIn').value.trim();
+  const st=document.getElementById('vinStatus');
+  if(vin.length!==17){st.className='vin-status vin-err';st.textContent='VIN must be exactly 17 characters';return;}
+  st.className='vin-status vin-loading';st.textContent='Decoding via NHTSA...';
+  try{
+    const r=await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/'+vin+'?format=json');
+    const j=await r.json();const v=j.Results[0];
+    const yr=v.ModelYear,mk=v.Make,mo=v.Model,trim=v.Trim;
+    if(!yr||!mk){st.className='vin-status vin-err';st.textContent='Could not decode — check VIN and try again';return;}
+    st.className='vin-status vin-ok';
+    st.textContent='✓ '+yr+' '+mk+' '+mo+(trim?' · '+trim:'');
+    const ySel=document.getElementById('yearSel');
+    for(let i=0;i<ySel.options.length;i++){if(ySel.options[i].value==yr){ySel.selectedIndex=i;break;}}
+    const mSel=document.getElementById('makeSel');
+    for(let i=0;i<mSel.options.length;i++){if(mSel.options[i].value.toUpperCase()===mk.toUpperCase()){mSel.selectedIndex=i;break;}}
+    populateModels();
+    const moSel=document.getElementById('modelSel');
+    for(let i=0;i<moSel.options.length;i++){if(moSel.options[i].value.toUpperCase()===mo.toUpperCase()){moSel.selectedIndex=i;break;}}
+    const det=document.getElementById('vehDetails');
+    det.style.display='block';
+    det.innerHTML='<b>Engine:</b> '+(v.DisplacementL?parseFloat(v.DisplacementL).toFixed(1)+'L ':'')+(v.FuelTypePrimary||'')+' &nbsp;|&nbsp; <b>Drive:</b> '+(v.DriveType||'—');
+    autoDetectSystems(v);
+    onVehicleChanged();
+  }catch(e){st.className='vin-status vin-err';st.textContent='API error — check connection';}
+}
+
+function autoDetectSystems(v){
+  const has = (val) => val && /standard|optional/i.test(val);
+  const toggles = {
+    'front-camera':    has(v.ForwardCollisionWarning) || has(v.LaneDepartureWarning) || has(v.LaneKeepSystem),
+    'front-radar':     has(v.AdaptiveCruiseControl) || has(v.CrashImminentBraking) || has(v.DynamicBrakeSupport),
+    'bsd':             has(v.BlindSpotMon) || has(v.LaneChangeAlert),
+    'rear-camera':     has(v.RearVisibilitySystem) || has(v.BackupCamera),
+    'park-assist':     has(v.ParkAssist),
+  };
+  document.querySelectorAll('.sys-tog').forEach(el=>{
+    const s = el.dataset.sys;
+    if(toggles[s] === true){el.classList.remove('off');el.classList.add('on');activeSystems.add(s);}
+    else if(toggles[s] === false){el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);}
+  });
+  document.getElementById('sysNote').innerHTML='Auto-detected from VIN. <b>Verify with visual inspection</b> — NHTSA data is partial and trim-dependent equipment may vary.';
+}
+
+// ============================================================================
+// VEHICLE CHANGE
+// ============================================================================
+async function onVehicleChanged(){
+  const y = document.getElementById('yearSel').value;
+  const mk = document.getElementById('makeSel').value;
+  const mo = document.getElementById('modelSel').value;
+  currentYMM = (y && mk && mo) ? {year:y, make:mk, model:mo} : null;
+  currentMakeData = null;
+
+  const m = document.getElementById('vehMatch');
+  if(!currentYMM){m.style.display='none';return;}
+  m.style.display='block';
+  m.className='veh-match';
+  m.textContent='Loading calibration data...';
+
+  currentMakeData = await loadMakeData(mk);
+  if(currentMakeData){
+    m.className='veh-match ok';
+    m.innerHTML='✓ OEM calibration data loaded for '+mk+' · '+currentMakeData.components.length+' components · Source: '+currentMakeData.source.document;
+  } else {
+    m.className='veh-match warn';
+    m.innerHTML='⚠ No OEM calibration data on file for '+mk+'. Add makes/'+ (BRAND_TO_MAKE_FILE[mk]||mk.toLowerCase()) +'.json to enable. Refer to OEM service information for this vehicle.';
+  }
+}
+
+// ============================================================================
+// ZONES
+// ============================================================================
+function buildZones(){
+  const img=document.getElementById('carImg');
+  const div=document.getElementById('zonesDiv');
+  div.innerHTML='';
+  const iw=img.offsetWidth, ih=img.offsetHeight;
+  ZONE_DEFS.forEach(z=>{
+    const el=document.createElement('div');
+    el.className='zone'+(activeZones.has(z.id)?' hit':'');
+    el.style.left=(z.l/100*iw)+'px';
+    el.style.top=(z.t/100*ih)+'px';
+    el.style.width=(z.w/100*iw)+'px';
+    el.style.height=(z.h/100*ih)+'px';
+    el.innerHTML='<span class="zone-tip">'+z.label+'</span>';
+    el.addEventListener('click',()=>toggleZone(z.id,el));
+    div.appendChild(el);
+  });
+}
+
+function toggleZone(id,el){
+  if(activeZones.has(id)){activeZones.delete(id);el.classList.remove('hit');}
+  else{activeZones.add(id);el.classList.add('hit');}
+  const d=document.getElementById('selZones');
+  if(!activeZones.size){d.textContent='No damage zones selected';return;}
+  const labels=[...activeZones].map(id=>ZONE_DEFS.find(z=>z.id===id)?.label||id);
+  d.textContent='Damage: '+labels.join(' · ');
+}
+window.addEventListener('resize',buildZones);
+
+function toggleSys(el){
+  const s=el.dataset.sys;
+  if(el.classList.contains('on')){el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);}
+  else{el.classList.remove('off');el.classList.add('on');activeSystems.add(s);}
+}
+
+// ============================================================================
+// REPORT
+// ============================================================================
+function renderComponent(c, src){
+  let triggersHtml = '';
+  if(c.triggers && c.triggers.length){
+    triggersHtml += '<div class="cal-triggers">';
+    if(c.trigger_lead) triggersHtml += '<div class="cal-trig-lead">'+c.trigger_lead+'</div>';
+    triggersHtml += '<ul>'+c.triggers.map(t=>'<li>'+t+'</li>').join('')+'</ul>';
+    triggersHtml += '</div>';
+  }
+
+  let addNotesHtml = '';
+  if(c.additional_notes && c.additional_notes.length){
+    addNotesHtml = '<div class="cal-addnotes"><b>Additional requirements:</b><ul>'+c.additional_notes.map(n=>'<li>'+n+'</li>').join('')+'</ul></div>';
+  }
+
+  let calNoteHtml = c.calibration_note ? '<div class="cal-note">'+c.calibration_note+'</div>' : '';
+  let eqHtml = c.equipment_required ? '<div class="cal-eq">Equipment required: '+c.equipment_required+'</div>' : '';
+  let srcHtml = src ? '<div class="cal-source"><b>Source:</b> '+src.document+(src.file?' · <i>'+src.file+'</i>':'')+'</div>' : '';
+
+  return '<div class="cal-item">'
+    + '<div class="cal-hdr">'
+    +   '<div><div class="cal-name">'+c.component+'</div>'
+    +     '<div class="cal-loc">'+c.location+'</div>'
+    +     eqHtml
+    +   '</div>'
+    +   '<span class="badge-req">Required</span>'
+    + '</div>'
+    + triggersHtml
+    + addNotesHtml
+    + calNoteHtml
+    + srcHtml
+    + '</div>';
+}
+
+function generateReport(){
+  if(!activeZones.size){alert('Please click at least one damage zone on the vehicle.');return;}
+
+  const list = document.getElementById('calList');
+  const vehHeader = document.getElementById('vehHeader');
+  const finePrint = document.getElementById('finePrint');
+  list.innerHTML = '';
+  vehHeader.innerHTML = '';
+
+  if(currentYMM){
+    const zoneLabels = [...activeZones].map(id=>ZONE_DEFS.find(z=>z.id===id)?.label||id).join(' · ');
+    vehHeader.innerHTML = '<div class="veh-header"><b>'+currentYMM.year+' '+currentYMM.make+' '+currentYMM.model+'</b><div style="font-size:12px;color:#555;margin-top:2px">Damage zones: '+zoneLabels+'</div></div>';
+  }
+
+  if(!currentMakeData){
+    list.innerHTML += '<div class="no-data-banner"><b>No OEM calibration data on file for '+(currentYMM ? currentYMM.make : 'this make')+'.</b><br>Refer to OEM service information (AllData, ALLDATA, or manufacturer portal) for vehicle-specific calibration requirements.</div>';
+  }
+
+  // Match components
+  let matched = [];
+  if(currentMakeData){
+    for(const c of currentMakeData.components){
+      const zoneMatch = c.zones.some(z => z === '*' || activeZones.has(z));
+      const systemMatch = activeSystems.has(c.system);
+      if(zoneMatch && systemMatch) matched.push(c);
+    }
+  }
+
+  if(!matched.length && currentMakeData){
+    list.innerHTML += '<div class="no-data-banner"><b>No matching calibrations for selected zones and systems.</b><br>Verify zones clicked match actual damage, and that Step 3 toggles reflect installed equipment.</div>';
+  }
+
+  matched.forEach(c => list.innerHTML += renderComponent(c, currentMakeData.source));
+
+  // Count
+  document.getElementById('resultCount').textContent = matched.length+' calibration'+(matched.length!==1?'s':'')+' required';
+
+  // Fine print
+  let fpHtml = '';
+  if(currentMakeData){
+    fpHtml = '<b>Source document:</b> '+currentMakeData.source.document;
+    if(currentMakeData.source.file) fpHtml += ' (<i>'+currentMakeData.source.file+'</i>)';
+    fpHtml += '<br>';
+    if(currentMakeData.general_requirements) fpHtml += '<br><b>General requirements:</b> '+currentMakeData.general_requirements+'<br>';
+  }
+  fpHtml += '<br>All calibrations performed with OEM scan tools and OEM software. Trigger language is reproduced from OEM service information and position statements. This report is informational; always validate against current OEM service information for the specific VIN.';
+  finePrint.innerHTML = fpHtml;
+
+  document.getElementById('resultsSection').style.display='block';
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function printReport(){window.print();}
+</script>
+</body>
+</html>
