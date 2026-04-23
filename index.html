@@ -70,7 +70,7 @@ input:focus,select:focus{border-color:#185FA5}
 .veh-header b{color:#1a1a1a}
 .loading{text-align:center;color:#888;padding:1rem;font-size:12px}
 @media print{
-  .btn-gen,.btn-sm,.btn-pdf,.zone,.step-lbl,#step1-card,#step2-card,#step3-card{display:none}
+  .btn-gen,.btn-sm,.btn-pdf,.zone,.step-lbl,#step1-card,#step2-card,#step3-card,#step4-card{display:none}
   body{background:#fff;font-size:11px}
   .card{border:none;padding:4px 0}
   .cal-item{break-inside:avoid}
@@ -130,6 +130,16 @@ input:focus,select:focus{border-color:#185FA5}
     <div class="sys-tog on" data-sys="seat-belt" onclick="toggleSys(this)"><span>Seat belt</span><span class="pip"></span></div>
     <div class="sys-tog off" data-sys="other" onclick="toggleSys(this)"><span>HUD / other</span><span class="pip"></span></div>
   </div>
+</div>
+
+<div class="step-lbl">Step 4 — Attach pre-scan report (optional)</div>
+<div class="card" id="step4-card">
+  <div class="sys-note">Upload the OEM scan tool pre-scan PDF. The filename and upload timestamp will appear on the generated report for documentation. Use your OEM scan tool's "save as PDF" feature.</div>
+  <div class="row">
+    <input type="file" id="scanPdf" accept="application/pdf,.pdf" onchange="onScanPdfChanged()" style="padding:6px"/>
+    <button class="btn-sm" onclick="clearScanPdf()" type="button">Clear</button>
+  </div>
+  <div id="scanPdfStatus" style="font-size:12px;color:#666;margin-top:6px"></div>
 </div>
 
 <button class="btn-gen" onclick="generateReport()">Generate Calibration Report</button>
@@ -229,6 +239,7 @@ let activeZones = new Set();
 let activeSystems = new Set();
 let currentYMM = null;
 let currentMakeData = null;
+let scanPdfFile = null;  // File object from upload
 const makeCache = {};  // filename -> parsed JSON
 
 document.querySelectorAll('.sys-tog').forEach(el=>{if(el.classList.contains('on'))activeSystems.add(el.dataset.sys);});
@@ -385,6 +396,42 @@ function toggleSys(el){
 }
 
 // ============================================================================
+// SCAN PDF UPLOAD
+// ============================================================================
+function onScanPdfChanged(){
+  const input = document.getElementById('scanPdf');
+  const status = document.getElementById('scanPdfStatus');
+  if(!input.files || !input.files[0]){scanPdfFile=null;status.textContent='';return;}
+  const f = input.files[0];
+  scanPdfFile = f;
+  const sizeKB = (f.size/1024).toFixed(0);
+  status.innerHTML = '✓ <b>'+f.name+'</b> ('+sizeKB+' KB) attached. Will be noted on the report.';
+  status.style.color = '#1D9E75';
+}
+
+function clearScanPdf(){
+  scanPdfFile = null;
+  document.getElementById('scanPdf').value = '';
+  document.getElementById('scanPdfStatus').textContent = '';
+}
+
+// ============================================================================
+// MODEL EXCLUSIONS — checks if a component doesn't apply to the specific model/year
+// ============================================================================
+function componentExcludedForVehicle(component, ymm){
+  if(!component.model_exclusions || !ymm) return null;
+  const y = parseInt(ymm.year);
+  const mo = ymm.model.toLowerCase();
+  for(const ex of component.model_exclusions){
+    if(ex.model.toLowerCase() !== mo) continue;
+    if(y >= (ex.year_start||0) && y <= (ex.year_end||9999)){
+      return ex;
+    }
+  }
+  return null;
+}
+
+// ============================================================================
 // REPORT
 // ============================================================================
 function renderComponent(c, src){
@@ -431,7 +478,12 @@ function generateReport(){
 
   if(currentYMM){
     const zoneLabels = [...activeZones].map(id=>ZONE_DEFS.find(z=>z.id===id)?.label||id).join(' · ');
-    vehHeader.innerHTML = '<div class="veh-header"><b>'+currentYMM.year+' '+currentYMM.make+' '+currentYMM.model+'</b><div style="font-size:12px;color:#555;margin-top:2px">Damage zones: '+zoneLabels+'</div></div>';
+    let scanHtml = '';
+    if(scanPdfFile){
+      const ts = new Date().toLocaleString();
+      scanHtml = '<div style="font-size:11.5px;color:#1D9E75;margin-top:4px"><b>Pre-scan attached:</b> '+scanPdfFile.name+' · Uploaded '+ts+'</div>';
+    }
+    vehHeader.innerHTML = '<div class="veh-header"><b>'+currentYMM.year+' '+currentYMM.make+' '+currentYMM.model+'</b><div style="font-size:12px;color:#555;margin-top:2px">Damage zones: '+zoneLabels+'</div>'+scanHtml+'</div>';
   }
 
   if(!currentMakeData){
@@ -440,11 +492,20 @@ function generateReport(){
 
   // Match components
   let matched = [];
+  let excluded = [];  // components that would have matched but are excluded for this model/year
   if(currentMakeData){
     for(const c of currentMakeData.components){
       const zoneMatch = c.zones.some(z => z === '*' || activeZones.has(z));
       const systemMatch = activeSystems.has(c.system);
-      if(zoneMatch && systemMatch) matched.push(c);
+      if(!zoneMatch || !systemMatch) continue;
+
+      // Check model_exclusions — per-model/year-range exclusion (e.g., Civic 2022+ has no radar)
+      const excl = componentExcludedForVehicle(c, currentYMM);
+      if(excl){
+        excluded.push({component:c, reason:excl.reason});
+        continue;
+      }
+      matched.push(c);
     }
   }
 
@@ -453,6 +514,17 @@ function generateReport(){
   }
 
   matched.forEach(c => list.innerHTML += renderComponent(c, currentMakeData.source));
+
+  // Show excluded components as informational notes
+  if(excluded.length){
+    let exHtml = '<div style="margin-top:18px;padding:12px 14px;background:#f0f4fa;border-left:3px solid #888;border-radius:0 6px 6px 0;font-size:12.5px;color:#444;line-height:1.5">';
+    exHtml += '<b style="color:#1a1a1a">Note — components NOT required for this vehicle:</b><ul style="margin-top:6px;padding-left:20px">';
+    excluded.forEach(e => {
+      exHtml += '<li><b>'+e.component.component+'</b> — '+e.reason+'</li>';
+    });
+    exHtml += '</ul></div>';
+    list.innerHTML += exHtml;
+  }
 
   // Count
   document.getElementById('resultCount').textContent = matched.length+' calibration'+(matched.length!==1?'s':'')+' required';

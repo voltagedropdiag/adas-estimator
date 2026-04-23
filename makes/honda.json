@@ -15,7 +15,11 @@
       "system": "front-radar",
       "location": "Behind front Honda emblem, lower center of front bumper grille, or to the side behind front bumper trim (varies by model)",
       "zones": ["front-bumper"],
-      "calibration_note": "Requires vertical and horizontal adjustment. Adjustment performed using i-HDS scan tool and Honda special tools (Reflector Set, Alignment Set, Stand). Replacement unit must be ordered by VIN. 2022 Civic is not equipped with millimeter wave radar — driving support functions integrated into multipurpose camera.",
+      "model_exclusions": [
+        {"model": "Civic", "year_start": 2022, "year_end": 2030, "reason": "Per Honda job aid: 2022+ Civic is not equipped with a millimeter wave radar. Driving support functions are integrated into the multipurpose camera unit."},
+        {"model": "HR-V", "year_start": 2023, "year_end": 2030, "reason": "Per Honda job aid: 2023+ HR-V (3rd gen) is not equipped with a millimeter wave radar. Driving support functions are integrated into the multipurpose camera unit."}
+      ],
+      "calibration_note": "Requires vertical and horizontal adjustment. Adjustment performed using i-HDS scan tool and Honda special tools (Reflector Set, Alignment Set, Stand). Replacement unit must be ordered by VIN.",
       "trigger_lead": "Aim the millimeter wave radar when any of the following apply:",
       "triggers": [
         "Millimeter wave radar unit was removed and installed",
@@ -51,7 +55,7 @@
       "system": "bsd",
       "location": "Left and right sides of the rear body panel, behind the rear bumper (mounting position varies by model)",
       "zones": ["rear-bumper", "lq-panel", "rq-panel"],
-      "calibration_note": "Static inspection using laser with targets positioned left and right rear of vehicle. If laser points within target boundaries, aim is good. If not, secondary inspection required to check radar mounting area for damage. If BSI radar unit was replaced due to damage, the BSI Radar Unit Mounting Area Check procedure must be performed before installing the new unit. 2022 Civic uses a different procedure — see Blind Spot Information (BSI) System Learning Value Reset.",
+      "calibration_note": "Static inspection using laser with targets positioned left and right rear of vehicle. If laser points within target boundaries, aim is good. If not, secondary inspection required to check radar mounting area for damage. If BSI radar unit was replaced due to damage, the BSI Radar Unit Mounting Area Check procedure must be performed before installing the new unit. 2022+ Civic uses a different procedure — see Blind Spot Information (BSI) System Learning Value Reset.",
       "trigger_lead": "Inspect BSI radar aiming when any of the following apply:",
       "triggers": [
         "BSI radar unit was removed and installed",
