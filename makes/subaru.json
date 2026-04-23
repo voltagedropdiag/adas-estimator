@@ -1,0 +1,70 @@
+{
+  "make": "Subaru",
+  "includes_brands": ["Subaru"],
+  "source": {
+    "document": "Subaru service information — trigger language reproduced from Subaru service info as documented in Opus ADAS inspection reports. Additional reference: Subaru Pre and Post-Repair Scanning Position Statement.",
+    "file": "23_Subaru_Forester.pdf (Opus report citing Subaru service info), Subaru_Pos_PrePostScanning717.pdf",
+    "portal": "techinfo.subaru.com",
+    "note": "Subaru defines a collision as any damage beyond cosmetic body panel distortion. Calibrations may be required even if no warning messages are displayed."
+  },
+  "general_requirements": "Per Subaru Pre/Post-Repair Scanning position: pre-repair scanning is required; post-repair scanning is required. Subaru collision calibration requirements note that even minor collisions may affect camera axis alignment.",
+
+  "components": [
+    {
+      "component": "EyeSight Stereo Camera",
+      "system": "front-camera",
+      "location": "Windshield",
+      "zones": ["windshield", "front-bumper"],
+      "calibration_note": "ADAS targets required for system calibration; dynamic drive required to finalize calibration. Clear Active Lane Keep System Learning after a four-wheel alignment or suspension work. Perform VDC 0-point adjustment. Use OE glass for replacements. Ensure tire inflation pressure is correct, vehicle is unloaded, and fuel tank is full.",
+      "trigger_lead": "Calibrate EyeSight Camera System if any of the following occur:",
+      "triggers": [
+        "Windshield, headliner, overhead console, or stereo camera is removed, installed, replaced, adjusted, or repaired",
+        "Vehicle was involved in a collision exceeding cosmetic body panel distortion"
+      ],
+      "additional_notes": [
+        "Even minor collisions may affect camera axis alignment, requiring recalibration",
+        "Subaru defines a collision as any damage beyond cosmetic body panel distortion",
+        "Calibrate even if no warning messages are displayed"
+      ]
+    },
+    {
+      "component": "Blind Spot Sensors",
+      "system": "bsd",
+      "location": "Rear Quarter Panels",
+      "zones": ["lq-panel", "rq-panel", "rear-bumper"],
+      "calibration_note": "ADAS targets required for system calibration. Before calibration: verify tire inflation pressure is correct, vehicle does not have load, and fuel tank is fully filled. Subaru also states the rear bumper cover should be replaced if there is any damage within the sensor viewing area (inside or outside).",
+      "trigger_lead": "Calibrate Blind Spot Detection (BSD) when any of the following are removed, installed, replaced, or repairs are performed in the immediate mounting area:",
+      "triggers": [
+        "Quarter panel",
+        "Rear body panel",
+        "Sensor",
+        "Sensor bracket",
+        "Rear bumper is damaged (BSD calibration required; replace rear bumper cover if damage is within sensor viewing area)"
+      ]
+    },
+    {
+      "component": "Sonar Sensors (Rear Parking)",
+      "system": "park-assist",
+      "location": "Rear Bumper",
+      "zones": ["rear-bumper"],
+      "calibration_note": "Initialization procedure. Sonar Height Angle Inspection required.",
+      "trigger_lead": "Perform Sonar Height Angle Inspection when any of the following apply:",
+      "triggers": [
+        "Rear bumper is replaced",
+        "Sensors are removed, installed, or replaced"
+      ]
+    },
+    {
+      "component": "Occupant Detection System",
+      "system": "occupant",
+      "location": "Passenger Seat",
+      "zones": ["*"],
+      "calibration_note": "Calibration and zeroing required. The seat must be upright and empty, dry, and free from any aftermarket covering when performing the zeroing. The zero procedure may need to be repeated more than once in some instances. System should be inspected if vehicle has been in a collision.",
+      "trigger_lead": "Calibrate and zero the Occupant Detection System when any of the following apply:",
+      "triggers": [
+        "Any seat component is removed, loosened, or replaced",
+        "Vehicle has been in a collision (inspection required)"
+      ]
+    }
+  ]
+}

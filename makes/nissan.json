@@ -1,0 +1,42 @@
+{
+  "make": "Nissan",
+  "includes_brands": ["Nissan", "Infiniti", "Mitsubishi"],
+  "source": {
+    "document": "Nissan Collision Position Statements: Radar Recalibration Post-Repair (NPSB-16-597) and Around View Monitor Calibration (NPSB-16-600), dated June 20, 2016",
+    "file": "Nissan_Radar_Position_Statement.pdf, nissan_around_view.pdf, NissanPositionStatement_PreandPostRepairScanningCalibrationsv2.pdf",
+    "portal": "collision.nissanusa.com",
+    "note": "Mitsubishi shares service information with Nissan through the Renault-Nissan-Mitsubishi Alliance. Infiniti is Nissan's luxury division and follows Nissan procedures."
+  },
+  "general_requirements": "Nissan North America has taken the position that the recalibration of radar devices in the described repair situations is mandatory, without exception. For additional information, refer to service manual section 'CCS' where applicable.",
+
+  "components": [
+    {
+      "component": "Front Radar Sensor",
+      "system": "front-radar",
+      "location": "Front of vehicle (Safety Shield Technology front radar)",
+      "zones": ["front-bumper"],
+      "calibration_note": "Per NPSB-16-597: Recalibration of radar devices in the described repair situations is mandatory, without exception. Failure to follow this recommendation could result in radar malfunction, or vehicle systems including safety features not working as originally intended. Refer to service manual section 'CCS' where applicable.",
+      "trigger_lead": "Per Nissan Position Statement NPSB-16-597, recalibration is required after any repair situation to the front of the vehicle that would cause the radar sensor to be:",
+      "triggers": [
+        "Shifted",
+        "Removed",
+        "Reinstalled",
+        "Jolted in the collision"
+      ]
+    },
+    {
+      "component": "Around View Monitor Cameras",
+      "system": "surround",
+      "location": "Front grille, rear, and both side mirrors (four cameras)",
+      "zones": ["front-bumper", "rear-bumper", "lf-door", "rf-door", "liftgate"],
+      "calibration_note": "Per NPSB-16-600: Any time a camera or camera mounting part is removed, installed, or replaced, it is mandatory for the qualified repair professional to perform a calibration of this system. Failure to adhere to this calibration procedure could result in the Around View Monitor system not functioning as originally intended.",
+      "trigger_lead": "Per Nissan Position Statement NPSB-16-600, calibration is mandatory any time any of the following is removed, installed, or replaced:",
+      "triggers": [
+        "Any Around View Monitor camera",
+        "Camera mounting part (front grille, door mirror, or others)"
+      ]
+    }
+  ],
+
+  "notes_for_other_components": "Nissan has not published public position statements with trigger language for forward camera, blind spot radar, or parking sensors. For these components, refer to Nissan Service Manual (section 'CCS' and related sections) for specific calibration requirements."
+}

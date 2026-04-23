@@ -1,0 +1,98 @@
+{
+  "make": "Toyota",
+  "includes_brands": ["Toyota", "Lexus"],
+  "source": {
+    "document": "Toyota service information (TIS) — trigger language reproduced from Toyota TIS as documented in Opus ADAS inspection reports. Source for scanning requirements: Toyota CRIB 191 (Pre/Post-Repair Diagnostic Scan).",
+    "file": "25_toyota_rav4.pdf (Opus report citing Toyota TIS)",
+    "portal": "techinfo.toyota.com",
+    "note": "Lexus uses the same Toyota Information System (TIS) and follows the same calibration procedures. Verify specific procedure for each vehicle in TIS."
+  },
+  "general_requirements": "Per Toyota CRIB 191: 'It is necessary for repairers perform a Health Check diagnostic scan before and after every repair if a vehicle has sustained damage as a result of a collision.' Components from various systems can be damaged in a collision and may not necessarily cause a MIL.",
+
+  "components": [
+    {
+      "component": "Millimeter Wave Radar Sensor",
+      "system": "front-radar",
+      "location": "Front Bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "Static calibration requires ADAS targets. Dynamic calibration available without targets. Inspect radar sensor housing for signs of impact — replace the sensor if any impact marks or damage are found. Pre-calibration prep: remove excess weight, verify and set correct tire pressures.",
+      "trigger_lead": "Calibrate the front Millimeter Wave Radar Sensor if any of the following apply:",
+      "triggers": [
+        "Front bumper cover is damaged or deformed (e.g., due to an accident)",
+        "Sensor installation has been altered, loosened, removed, or replaced",
+        "Radar sensor bracket has been removed or replaced",
+        "Grille replacement",
+        "The bumper installation area on the body is repaired"
+      ]
+    },
+    {
+      "component": "Rear Television Camera (Park Assist Monitor)",
+      "system": "rear-camera",
+      "location": "Trunk Lid / Liftgate",
+      "zones": ["rear-bumper", "liftgate"],
+      "calibration_note": "ADAS targets required — made using masking tape per Toyota procedure.",
+      "trigger_lead": "Calibrate the Park Assist Monitor (Rear Television Camera) when any of the following is removed, installed, replaced, or misaligned:",
+      "triggers": [
+        "Camera",
+        "Liftgate"
+      ]
+    },
+    {
+      "component": "Blind Spot Monitor Sensor - Rear",
+      "system": "bsd",
+      "location": "Rear Quarter Panels",
+      "zones": ["lq-panel", "rq-panel", "rear-bumper"],
+      "calibration_note": "ADAS targets required for blind spot aiming. Toyota advises against repairs near or over the blind spot sensor radar emission area.",
+      "trigger_lead": "Perform the rear blind spot aiming when any of the following apply:",
+      "triggers": [
+        "The quarter panel blind spot mounting bracket is damaged",
+        "The quarter has been repaired or replaced near the sensor mounting area",
+        "The blind spot radar has been removed, installed, or replaced",
+        "Impact damage has occurred near or over the blind spot sensor area"
+      ]
+    },
+    {
+      "component": "Parking Assist Distance Sensors (Intelligent Clearance Sonar)",
+      "system": "park-assist",
+      "location": "Front Bumper and Rear Bumper",
+      "zones": ["front-bumper", "rear-bumper"],
+      "calibration_note": "Initialization procedure. Sensor angles must be measured using specialty tools prior to carrying out the initialization procedure.",
+      "trigger_lead": "Calibrate the Intelligent Clearance Sonar System when any of the following apply:",
+      "triggers": [
+        "Park assist sensors are removed",
+        "Front or rear bumper is removed or replaced",
+        "Vehicle height changes (due to suspension damage or tire replacement)",
+        "Steering sensor replacement"
+      ]
+    },
+    {
+      "component": "Occupant Classification System",
+      "system": "occupant",
+      "location": "Passenger Seat",
+      "zones": ["*"],
+      "calibration_note": "DTC Read and Clear procedure plus physical inspection required if vehicle was involved in a collision. Visually inspect ECU housing for cracks, dents, chips; check connector and serial number label for damage. Replace component if any defects found. Zero Point Calibration required in conditions listed below. No seat weights required for calibration.",
+      "trigger_lead": "Perform a Zero Point Calibration if any of the following apply:",
+      "triggers": [
+        "Occupant detection ECU is replaced",
+        "Front passenger seat is removed and reinstalled",
+        "Front passenger seat bolts are removed and reinstalled",
+        "Passenger airbag ON/OFF indicator stays on when empty",
+        "Occupant classification sensor collision detection DTC is present due to an accident/collision",
+        "Vehicle is brought to a workshop for repair due to an accident or collision"
+      ]
+    },
+    {
+      "component": "Seat Belt",
+      "system": "seat-belt",
+      "location": "Interior",
+      "zones": ["*"],
+      "calibration_note": "Inspection only, per Toyota procedure.",
+      "trigger_lead": "Seat belt inspection required:",
+      "triggers": [
+        "Seatbelts must be inspected after a collision to ensure passenger safety even if the airbags have not deployed"
+      ]
+    }
+  ],
+
+  "notes_for_other_components": "Forward Recognition Camera (Lane Departure) trigger list to be added from Toyota TIS — verify exact procedure in service information for specific vehicle."
+}

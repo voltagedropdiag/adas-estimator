@@ -1,0 +1,40 @@
+{
+  "make": "Stellantis",
+  "includes_brands": ["Chrysler", "Jeep", "Dodge", "Ram", "Fiat", "Alfa Romeo"],
+  "source": {
+    "document": "FCA Service Bulletin 31-002-19 — Scan Tool Support Before and After Collision Repair (September 25, 2019)",
+    "file": "FCA3100219ScanningPositionStatement.pdf",
+    "portal": "techauthority.com",
+    "note": "FCA position statement is a scanning requirement — it does not contain component-level trigger tables. Component-specific calibration triggers must be obtained from FCA Service Information (TechAuthority) for each specific vehicle. The wiTECH scan tool is required for all FCA diagnostics and calibrations."
+  },
+  "general_requirements": "Per FCA Bulletin 31-002-19: Safety and security related systems (ABS, SRS, ORC, seat belts, active head restraints, forward facing camera and radar, blind spot monitoring, and other automated ADAS) MUST be tested for fault codes before and after collision repair using the Mopar wiTECH scan tool. Use of the wiTECH scan tool is necessary before and after collision repair.",
+
+  "post_collision_universal_triggers": {
+    "trigger_lead": "Per FCA, any of the following conditions could trigger DTCs prior to or during collision repairs, requiring pre- and post-repair scan:",
+    "triggers": [
+      "Vehicle is involved in an accident or collision, even though the damage may appear minor",
+      "Vehicles have been in an accident with or without airbag deployment",
+      "Voltage loss, including battery disconnects and Hybrid battery disabling",
+      "Significant vehicle disassembly including, but not limited to, bumpers, door handles, headlamps, and mirrors",
+      "Interior trim repair or removal",
+      "Glass removal and replacement operations"
+    ]
+  },
+
+  "components": [
+    {
+      "component": "SRS Airbag Squib Status Verification",
+      "system": "occupant",
+      "location": "Airbag Module / ORC",
+      "zones": ["*"],
+      "calibration_note": "Multistage airbags with multiple initiators (squibs) MUST be checked to determine that all squibs were used during the deployment event. Typically all initiators are exhausted during deployment, but it is possible for only one to have been exhausted. Verify status of all airbag squibs using the wiTECH scan tool prior to removing deployed airbags for disposal.",
+      "trigger_lead": "Per FCA bulletin 31-002-19, squib status verification required when:",
+      "triggers": [
+        "Any airbag deployment event has occurred",
+        "Prior to removing deployed airbags from the vehicle for disposal"
+      ]
+    }
+  ],
+
+  "notes_for_other_components": "FCA does not publish component-level trigger tables in their public position statements. Trigger information for forward camera, radar, BSD, parking sensors, etc. must be obtained from FCA Service Information (techauthority.com) for the specific vehicle. Recommend sourcing per-vehicle procedures through AllData or wiTECH service information."
+}

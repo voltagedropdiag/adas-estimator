@@ -1,0 +1,51 @@
+{
+  "make": "Mazda",
+  "includes_brands": ["Mazda"],
+  "source": {
+    "document": "Mazda service information — trigger language reproduced from Mazda service info as documented in Opus ADAS inspection reports.",
+    "file": "20_mazda_cx5.pdf (Opus report citing Mazda service info)",
+    "portal": "mazdausa.com"
+  },
+  "general_requirements": "Per Mazda North American Operations: all vehicles being repaired for collision damage should be scanned before and after the repair. DTCs will be stored if any of the sensors, cameras, or radars were damaged in the collision.",
+
+  "components": [
+    {
+      "component": "Front Radar Sensor",
+      "system": "front-radar",
+      "location": "Front Bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "Targets required for calibration. Wheel alignment required if suspected out of spec. Calibration required if bumper cover or grille are struck as it may deviate the radar sensor position.",
+      "trigger_lead": "Calibrate the Front Radar sensor if any of the following is removed, replaced, or struck in a collision:",
+      "triggers": [
+        "Radar unit",
+        "Radar bracket",
+        "Radiator support (replace radar unit if struck)"
+      ]
+    },
+    {
+      "component": "Rear Side Radar (Blind Spot)",
+      "system": "bsd",
+      "location": "Rear Bumper (behind rear bumper cover)",
+      "zones": ["rear-bumper", "lq-panel", "rq-panel"],
+      "calibration_note": "ADAS targets required for system calibration. If paint coat thickness has changed, the radar emissions angle will deviate.",
+      "trigger_lead": "Calibrate the Rear Side Radar System (rear blind spot sensors) when the bumper is replaced or if any of the following are removed, installed, or replaced:",
+      "triggers": [
+        "Side radar unit (replace radar unit if struck and do not repair bumper over radar)",
+        "Side radar bracket"
+      ]
+    },
+    {
+      "component": "Passenger Seat Weight Sensor (Occupant Classification)",
+      "system": "occupant",
+      "location": "Passenger Seat",
+      "zones": ["*"],
+      "calibration_note": "The occupant classification sensor must be calibrated whenever passenger seat components or the sensor itself is replaced or disassembled. For cases involving passenger seat removal, reinstallation, or vehicle collision, a DTC inspection is first required. During the DTC inspection procedure, the system will calibrate the sensor during self-tests. Verify seat position and environmental requirements prior to performing self-tests.",
+      "trigger_lead": "Calibrate the Passenger Seat Weight Sensor when any of the following apply:",
+      "triggers": [
+        "Passenger seat components or the sensor itself is replaced or disassembled",
+        "Passenger seat removal or reinstallation (DTC inspection required first)",
+        "Vehicle collision (DTC inspection required first)"
+      ]
+    }
+  ]
+}

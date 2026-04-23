@@ -1,0 +1,127 @@
+{
+  "make": "GM",
+  "includes_brands": ["Chevrolet", "Cadillac", "Buick", "GMC"],
+  "source": {
+    "document": "GM Driver Assistance Systems Job Aid (Document ID #5577683, June 4, 2021)",
+    "file": "GM_Adas_Job_Aid.pdf",
+    "portal": "genuinegmparts.com",
+    "additional_reference": "GM Position Statement: Pre- and Post-Repair Scan of Collision Vehicles (prepostscancollisionvehicles.pdf)"
+  },
+  "general_requirements": "Learn is performed using GDS2 scan tool. SPS programming is required after replacement of most components. Refer to appropriate Service Information document for specific learn instructions and any additional programming operations needed if the component was replaced.",
+
+  "components": [
+    {
+      "component": "Frontview Camera - Windshield",
+      "system": "front-camera",
+      "location": "Windshield, near the inside rearview mirror (clipped into adhesive-mounted bracket)",
+      "zones": ["windshield", "front-bumper"],
+      "calibration_note": "SPS programming required after replacement. Some vehicles begin learn automatically after programming; others require learn started via GDS2. Ideal learn environment is a two-lane divided highway with clear lane markings, driven at 35-56 MPH (56-90 km/h).",
+      "trigger_lead": "Learn is required for the Frontview Camera - Windshield when any of the following apply:",
+      "triggers": [
+        "Frontview Camera - Windshield was replaced",
+        "Frontview Camera - Windshield was removed from the bracket and reinstalled",
+        "Windshield was replaced or removed and reinstalled",
+        "After collision repair in instances where damage exceeds minor outer body panel cosmetic distortion",
+        "When collision damage requires a suspension alignment be performed",
+        "After any airbag deployment",
+        "DTC B1008 (Calibration Data) is set in the Frontview Camera - Windshield",
+        "DTC B395D (Camera Misaligned) is set in the Frontview Camera - Windshield",
+        "DTC B101E (Electronic Control Unit Software) is set in the Active Safety Control Module"
+      ]
+    },
+    {
+      "component": "Long Range Radar Sensor Module",
+      "system": "front-radar",
+      "location": "Center grill area behind the brand emblem, or behind the lower fascia (varies by model)",
+      "zones": ["front-bumper"],
+      "calibration_note": "SPS programming required after replacement. Because of the location at the front of the vehicle, this module is susceptible to damage in even minor collisions. Ensure appropriate scans are performed per GM Position Statements.",
+      "trigger_lead": "Learn is required for the Long Range Radar Sensor Module when any of the following apply:",
+      "triggers": [
+        "Long Range Radar Sensor Module was replaced",
+        "Long Range Radar Sensor Module was removed and reinstalled",
+        "After collision repair in instances where damage exceeds minor outer body panel cosmetic distortion",
+        "When collision damage requires a suspension alignment be performed",
+        "After any airbag deployment",
+        "DTC B390C (Long Range Radar Sensor Module) is set in the Active Safety Control Module"
+      ]
+    },
+    {
+      "component": "Short Range Radar Sensor Module",
+      "system": "front-corner-radar",
+      "location": "Behind front fascia (left and right — Cadillac with UGN, or Super Cruise), behind rear fascia (left/right/center), or on left/right body sides behind rear fascia (Super Cruise)",
+      "zones": ["front-bumper", "rear-bumper", "lq-panel", "rq-panel"],
+      "calibration_note": "No learn procedure is required after installation, but SPS programming is required after replacement. Because of the location behind the front and/or rear fascia/bumper, these modules are susceptible to damage in even minor collisions. Ensure appropriate scans are performed per GM Position Statements.",
+      "trigger_lead": "SPS programming is required, but no GDS2 learn is required. Per GM job aid:",
+      "triggers": [
+        "Short Range Radar Sensor Module is replaced (SPS programming required; no learn)",
+        "Damage to the front or rear fascia/bumper — module is susceptible to damage in even minor collisions; pre- and post-scan required"
+      ]
+    },
+    {
+      "component": "Left Side Object Sensor Module / Right Side Object Sensor Module",
+      "system": "bsd",
+      "location": "Left and right vehicle body sides, behind the rear fascia or in the rear bumper",
+      "zones": ["rear-bumper", "lq-panel", "rq-panel"],
+      "calibration_note": "No specific learn required as part of service — modules are always performing coarse and fine learning during operation. SPS programming is required after replacement. Drive the vehicle to begin the learn. Because of their location, modules are susceptible to damage in even minor collisions. Operating conditions that may slow learn: limited traffic/roadside objects, mud or snow buildup in sensor area, stickers/labels on rear fascia near sensor, damage to rear fascia or sensor bracket, incorrect collision repair.",
+      "trigger_lead": "No learn required per GM job aid, but the following situations require attention:",
+      "triggers": [
+        "Module was replaced (SPS programming required; no learn needed — drive vehicle to begin automatic learn)",
+        "Damage to rear fascia/bumper — module susceptible to damage in even minor collisions; pre- and post-scan required",
+        "DTC B218L (Side Object Sensor Module - Left) or B218R (Side Object Sensor Module - Right) is set"
+      ]
+    },
+    {
+      "component": "Park Assist Sensor",
+      "system": "park-assist",
+      "location": "Front and rear fascias or bumpers",
+      "zones": ["front-bumper", "rear-bumper"],
+      "calibration_note": "For most vehicles, no learn is required. For 2013+ Chevrolet Spark, 2017+ Chevrolet Cruze, 2018+ Chevrolet Equinox, 2018+ GMC Terrain, and Buick Envision, learn is required using GDS2 after sensor replacement.",
+      "trigger_lead": "Per GM job aid, learn requirements for Park Assist Sensor:",
+      "triggers": [
+        "2013+ Chevrolet Spark, 2017+ Chevrolet Cruze, 2018+ Chevrolet Equinox, 2018+ GMC Terrain, Buick Envision — Learn required using GDS2 after sensor replacement",
+        "All other vehicles — no learn required after sensor replacement",
+        "Damage to front/rear fascia — sensor susceptible to damage in even minor collisions; pre- and post-scan required"
+      ]
+    },
+    {
+      "component": "Surround Vision Camera (Analog)",
+      "system": "surround",
+      "location": "Front grill/fascia, left outside rearview mirror, right outside rearview mirror, and rear center of vehicle",
+      "zones": ["front-bumper", "rear-bumper", "lf-door", "rf-door"],
+      "calibration_note": "Digital Surround Vision Cameras do NOT require learn. Only Analog Surround Vision Cameras require the learn procedure.",
+      "trigger_lead": "Learn is required for Analog Surround Vision Camera when any of the following apply:",
+      "triggers": [
+        "Surround Vision Camera was replaced",
+        "Surround Vision Camera was removed and reinstalled",
+        "Fascia, grill, bumper, applique, outside rearview mirror, or Surround Vision Camera mounting location was removed or replaced"
+      ]
+    },
+    {
+      "component": "Curb View Camera (Analog)",
+      "system": "front-camera",
+      "location": "Front of vehicle, in fascia or grill",
+      "zones": ["front-bumper"],
+      "calibration_note": "Digital Curb View Cameras do NOT require learn. Only Analog Curb View Cameras require the learn procedure.",
+      "trigger_lead": "Learn is required for Analog Curb View Camera when any of the following apply:",
+      "triggers": [
+        "Curb View Camera was replaced",
+        "Curb View Camera was removed and reinstalled",
+        "Fascia, grill, or Curb View Camera mounting location was removed or replaced"
+      ]
+    },
+    {
+      "component": "Night Vision Camera",
+      "system": "front-camera",
+      "location": "Lower grille or fascia, below driver-side headlamp",
+      "zones": ["front-bumper"],
+      "calibration_note": "Uses Night Vision Camera Control Module. Provides infrared view highlighting pedestrians or large animals.",
+      "trigger_lead": "Learn is required for the Night Vision Camera when any of the following apply:",
+      "triggers": [
+        "Night Vision Camera was replaced",
+        "Night Vision Camera was removed and reinstalled",
+        "Fascia, grill, or Night Vision mounting location was removed or replaced",
+        "Vehicle ride height has significantly changed from the factory position"
+      ]
+    }
+  ]
+}

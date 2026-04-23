@@ -1,0 +1,41 @@
+{
+  "make": "Mercedes-Benz",
+  "includes_brands": ["Mercedes-Benz"],
+  "source": {
+    "document": "Mercedes-Benz service information via Xentry — trigger language reproduced from MB service info as documented in Opus ADAS inspection reports. Additional reference: MBUSA Certified Collision Program Position Statement.",
+    "file": "21_mercedes_GLC300.pdf (Opus report citing MB service info), MBUSA_CCP_Position_Statement_A2.pdf",
+    "portal": "mbusa.com / Xentry (dealer-only)",
+    "note": "Xentry scan tool is required for all calibration and SCN programming procedures. Xentry must be connected throughout dynamic calibration drive cycles."
+  },
+  "general_requirements": "Per MBUSA position statement: as of model year 1996 (OBDII), vehicles involved in a collision repair should have these systems evaluated using an up-to-date Xentry Kit diagnostics computer. Pre-repair scanning and diagnosis is highly recommended. Post-repair scanning and diagnosis is necessary to ensure safety and driver-assist systems are operable and fully functioning. Many safety and driver-assist systems may have been activated during a collision and require vehicle calibration, normalization, or coding.",
+
+  "components": [
+    {
+      "component": "Distronic Radar Sensor",
+      "system": "front-radar",
+      "location": "Front Bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "ADAS targets are NOT required for system calibration. Xentry will need to be connected throughout the dynamic calibration drive cycle.",
+      "trigger_lead": "Distronic Plus requires calibration and SCN programming when:",
+      "triggers": [
+        "Radar unit is replaced"
+      ]
+    },
+    {
+      "component": "Active Brake Assist",
+      "system": "front-radar",
+      "location": "Front Bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "ADAS targets are NOT required for system calibration.",
+      "trigger_lead": "Active Brake Assist requires calibration when any of the following apply:",
+      "triggers": [
+        "Front bumper is removed",
+        "Front bumper is replaced",
+        "Module is removed",
+        "Module is replaced"
+      ]
+    }
+  ],
+
+  "notes_for_other_components": "Trigger lists for Multifunction Camera, Blind Spot Assist, 360° Camera, PARKTRONIC, and other MB ADAS components to be added from Xentry service information. The MBUSA Certified Collision Program Position Statement requires scanning and calibration but does not contain component-level trigger tables — those live in Xentry."
+}
