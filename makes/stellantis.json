@@ -2,12 +2,12 @@
   "make": "Stellantis",
   "includes_brands": ["Chrysler", "Jeep", "Dodge", "Ram", "Fiat", "Alfa Romeo"],
   "source": {
-    "document": "FCA Service Bulletin 31-002-19 — Scan Tool Support Before and After Collision Repair (September 25, 2019)",
-    "file": "FCA3100219ScanningPositionStatement.pdf",
+    "document": "FCA Service Bulletin 31-002-19 — Scan Tool Support Before and After Collision Repair (September 25, 2019). Additional reference: Chrysler Group LLC Collision Bulletin 31-003-12 — Adaptive Cruise Control (ACC) Module Sensor and Bracket Guidelines During Collision Repair and Damage Estimating (March 30, 2012).",
+    "file": "makes/sources/stellantis/ (Chrysler scan position statement, ACC bulletin 31-003-12)",
     "portal": "techauthority.com",
-    "note": "FCA position statement is a scanning requirement — it does not contain component-level trigger tables. Component-specific calibration triggers must be obtained from FCA Service Information (TechAuthority) for each specific vehicle. The wiTECH scan tool is required for all FCA diagnostics and calibrations."
+    "note": "Bulletin 31-003-12 predates the Stellantis formation — it was published by Chrysler Group LLC and most directly applies to legacy Chrysler/Jeep/Dodge/Ram vehicles. Fiat and Alfa Romeo use separate European-sourced service info. Per-component calibration triggers for newer Stellantis vehicles must be obtained from FCA Service Information (TechAuthority)."
   },
-  "general_requirements": "Per FCA Bulletin 31-002-19: Safety and security related systems (ABS, SRS, ORC, seat belts, active head restraints, forward facing camera and radar, blind spot monitoring, and other automated ADAS) MUST be tested for fault codes before and after collision repair using the Mopar wiTECH scan tool. Use of the wiTECH scan tool is necessary before and after collision repair.",
+  "general_requirements": "Per FCA Bulletin 31-002-19: Safety and security related systems (ABS, SRS, ORC, active head restraints, forward facing camera and radar, blind spot monitoring, and other automated ADAS) must be tested for fault codes before and after collision repair.",
 
   "post_collision_universal_triggers": {
     "trigger_lead": "Per FCA, any of the following conditions could trigger DTCs prior to or during collision repairs, requiring pre- and post-repair scan:",
@@ -23,12 +23,40 @@
 
   "components": [
     {
+      "component": "Driver Assist Sensor Module (DASM) - Forward Windshield Camera",
+      "system": "front-camera",
+      "location": "Windshield, upper center (DASM unit)",
+      "zones": ["windshield"],
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "DASM and/or DASM bracket have been removed",
+        "A new windshield is being installed to the vehicle",
+        "Tire diameter has been changed",
+        "Calibration Not Learned DTC (C008F-00) is present",
+        "Sensor Adjustment Required DTC (C14A4-00) is present"
+      ]
+    },
+    {
+      "component": "Adaptive Cruise Control (ACC) Sensor",
+      "system": "front-radar",
+      "location": "Front of vehicle, in the ACC sensor mounting bracket",
+      "zones": ["front-bumper"],
+      "calibration_note": "Per Chrysler Bulletin 31-003-12: the three plastic ball socket clips in the sensor mounting bracket must be replaced each time the ACC sensor is removed from and reinstalled onto the mounting bracket. The adjustable ball studs, ACC sensor, and ACC sensor bracket cannot be repaired — if ineffective or damaged the sensor assembly must be replaced. 2007-2010 Chrysler 300 models use a different alignment procedure with Miller special tools 9965 and 9649.",
+      "trigger_lead": "Alignment is required when:",
+      "triggers": [
+        "ACC sensor or sensor-and-bracket assembly is removed and reinstalled or replaced",
+        "Front end structural repairs are performed",
+        "Diagnostic Trouble Code (DTC) indicates ACC sensor adjustment is required"
+      ]
+    },
+    {
       "component": "SRS Airbag Squib Status Verification",
       "system": "occupant",
       "location": "Airbag Module / ORC",
       "zones": ["*"],
-      "calibration_note": "Multistage airbags with multiple initiators (squibs) MUST be checked to determine that all squibs were used during the deployment event. Typically all initiators are exhausted during deployment, but it is possible for only one to have been exhausted. Verify status of all airbag squibs using the wiTECH scan tool prior to removing deployed airbags for disposal.",
-      "trigger_lead": "Per FCA bulletin 31-002-19, squib status verification required when:",
+      "calibration_note": "Multistage airbags with multiple initiators (squibs) must be checked to determine that all squibs were used during the deployment event. Typically all initiators are exhausted during deployment, but it is possible for only one to have been exhausted.",
+      "trigger_lead": "Verification is required when:",
       "triggers": [
         "Any airbag deployment event has occurred",
         "Prior to removing deployed airbags from the vehicle for disposal"
@@ -36,5 +64,5 @@
     }
   ],
 
-  "notes_for_other_components": "FCA does not publish component-level trigger tables in their public position statements. Trigger information for forward camera, radar, BSD, parking sensors, etc. must be obtained from FCA Service Information (techauthority.com) for the specific vehicle. Recommend sourcing per-vehicle procedures through AllData or wiTECH service information."
+  "notes_for_other_components": "Per shop practice confirmed against available FCA/Stellantis service info: Stellantis vehicles do not have a published blind spot calibration, post-collision occupant/zero-point calibration, surround view calibration, or parking sensor calibration. The only calibrations documented are the DASM forward camera and the ACC front radar. If newer Stellantis platforms introduce additional procedures they would need to be sourced from FCA Service Information (techauthority.com)."
 }

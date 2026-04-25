@@ -2,9 +2,10 @@
   "make": "Mazda",
   "includes_brands": ["Mazda"],
   "source": {
-    "document": "Mazda service information — trigger language reproduced from Mazda service info as documented in Opus ADAS inspection reports.",
-    "file": "20_mazda_cx5.pdf (Opus report citing Mazda service info)",
-    "portal": "mazdausa.com"
+    "document": "Mazda service information (Mazda MSI) — front sensing camera aiming, front radar / front side radar aiming, 360° View Monitor System aiming, and seat weight sensor calibration procedures.",
+    "file": "makes/sources/mazda/ (multiple MSI extracts)",
+    "portal": "mazdausa.com",
+    "note": "Per user shop practice confirmed against MSI: no separate calibration is required for vehicles equipped with only a standalone rear backup camera (not part of the 360° View Monitor system). Mazda does not publish a parking sensor calibration procedure."
   },
   "general_requirements": "Per Mazda North American Operations: all vehicles being repaired for collision damage should be scanned before and after the repair. DTCs will be stored if any of the sensors, cameras, or radars were damaged in the collision.",
 
@@ -12,14 +13,25 @@
     {
       "component": "Front Radar Sensor",
       "system": "front-radar",
-      "location": "Front Bumper",
+      "location": "Behind the front center brand emblem / front bumper surface",
       "zones": ["front-bumper"],
-      "calibration_note": "Targets required for calibration. Wheel alignment required if suspected out of spec. Calibration required if bumper cover or grille are struck as it may deviate the radar sensor position.",
-      "trigger_lead": "Calibrate the Front Radar sensor if any of the following is removed, replaced, or struck in a collision:",
+      "calibration_note": "Front radar sensor aiming cannot be performed correctly if there is an object obstructing the radar emissions on the front center brand emblem or front bumper surface.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Radar unit",
-        "Radar bracket",
-        "Radiator support (replace radar unit if struck)"
+        "Front radar sensor is removed, installed, or replaced",
+        "Front bumper is removed or installed"
+      ]
+    },
+    {
+      "component": "Front Side Radar Sensor",
+      "system": "front-corner-radar",
+      "location": "Front corners, behind the front bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "Front side radar sensor aiming cannot be performed correctly if there is an object obstructing the radar emissions.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Front side radar sensor is removed, installed, or replaced",
+        "Front bumper is removed or installed"
       ]
     },
     {
@@ -27,24 +39,60 @@
       "system": "bsd",
       "location": "Rear Bumper (behind rear bumper cover)",
       "zones": ["rear-bumper", "lq-panel", "rq-panel"],
-      "calibration_note": "ADAS targets required for system calibration. If paint coat thickness has changed, the radar emissions angle will deviate.",
-      "trigger_lead": "Calibrate the Rear Side Radar System (rear blind spot sensors) when the bumper is replaced or if any of the following are removed, installed, or replaced:",
+      "calibration_note": "If paint coat thickness has changed, the radar emissions angle will deviate. Replace the radar unit if struck; do not repair the bumper over the radar area.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Side radar unit (replace radar unit if struck and do not repair bumper over radar)",
-        "Side radar bracket"
+        "Rear bumper is replaced",
+        "Side radar unit is removed, installed, or replaced",
+        "Side radar bracket is removed, installed, or replaced"
+      ]
+    },
+    {
+      "component": "Forward Sensing Camera (FSC)",
+      "system": "front-camera",
+      "location": "Windshield, upper center",
+      "zones": ["windshield"],
+      "calibration_note": "FSC aiming stores the camera shot angle by either mid-drive (dynamic) aiming or stationary (static) aiming with a target.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Forward Sensing Camera (FSC) is replaced",
+        "Windshield is replaced"
+      ]
+    },
+    {
+      "component": "360° View Monitor System (Surround View)",
+      "system": "surround",
+      "location": "Four cameras: front (grille/bumper), rear mount, and left/right outer mirrors",
+      "zones": ["front-bumper", "rear-bumper", "lf-door", "rf-door"],
+      "calibration_note": "Batch aiming requires four sets of SST 49 JP04 001; if not all four are available, each camera may be aimed individually. No calibration is required on vehicles equipped with only a standalone rear backup camera (without 360° View Monitor).",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Front camera is removed or installed",
+        "Front bumper is removed or installed",
+        "Side (mirror-mounted) camera is removed or installed",
+        "Power outer mirror is removed or installed",
+        "Lower outer mirror garnish is removed or installed",
+        "Side turn light is removed or installed",
+        "Front door is removed, installed, or adjusted",
+        "Rear mount camera is removed or installed",
+        "Rear finisher is removed or installed"
       ]
     },
     {
       "component": "Passenger Seat Weight Sensor (Occupant Classification)",
       "system": "occupant",
-      "location": "Passenger Seat",
+      "location": "Built into the passenger-side seat",
       "zones": ["*"],
-      "calibration_note": "The occupant classification sensor must be calibrated whenever passenger seat components or the sensor itself is replaced or disassembled. For cases involving passenger seat removal, reinstallation, or vehicle collision, a DTC inspection is first required. During the DTC inspection procedure, the system will calibrate the sensor during self-tests. Verify seat position and environmental requirements prior to performing self-tests.",
-      "trigger_lead": "Calibrate the Passenger Seat Weight Sensor when any of the following apply:",
+      "calibration_note": "Per Mazda Two-Step Deployment Control System (US/Canada spec): replacement or disassembly events require seat weight sensor calibration via M-MDS; removal, bolt-loosening, and collision events require seat weight sensor inspection via M-MDS. Both procedures are performed on M-MDS.",
+      "trigger_lead": "Calibration or inspection is required when:",
       "triggers": [
-        "Passenger seat components or the sensor itself is replaced or disassembled",
-        "Passenger seat removal or reinstallation (DTC inspection required first)",
-        "Vehicle collision (DTC inspection required first)"
+        "Seat weight sensor is replaced",
+        "Seat weight sensor control module is replaced",
+        "Passenger-side seat parts are replaced with new parts",
+        "Passenger-side seat is disassembled",
+        "Passenger-side seat is removed",
+        "Passenger's seat fixing bolts are loosened and retightened",
+        "Vehicle is involved in a collision"
       ]
     }
   ]

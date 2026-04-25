@@ -1,0 +1,76 @@
+{
+  "make": "Tesla",
+  "includes_brands": ["Tesla"],
+  "source": {
+    "document": "Tesla Service Manual procedures (2024 Model Y AWD reference): Front Bumper Replacement, Windshield Replacement, Camera Removal Warning, Parking Sensor Installation.",
+    "file": "makes/sources/tesla/ (multiple Tesla service manual extracts)",
+    "portal": "service.tesla.com",
+    "note": "Tesla camera calibration is performed by clearing calibration data via the vehicle touchscreen (Controls > Service > Camera Calibration > Clear Calibration); after clearing, the system auto-calibrates while driving. Newer Tesla vehicles (2022+ Model 3/Y) use Tesla Vision and do not have a front radar sensor or ultrasonic parking sensors — those components only apply to vehicles still equipped with them."
+  },
+  "general_requirements": "Per Tesla: whenever a camera has been moved out of its original position (for example, a camera or windshield replacement), camera calibration data must be cleared using the vehicle touchscreen.",
+
+  "components": [
+    {
+      "component": "Forward Facing Camera",
+      "system": "front-camera",
+      "location": "Behind windshield, upper center",
+      "zones": ["windshield"],
+      "calibration_note": "Forward facing camera pitch verification is required after windshield replacement. Whenever a camera has been moved out of its original position, calibration data must be cleared via the touchscreen.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Windshield is replaced",
+        "Forward facing camera is removed, installed, or moved out of its original position"
+      ]
+    },
+    {
+      "component": "Side Cameras (B-Pillar and Front-Side Repeater)",
+      "system": "front-camera",
+      "location": "B-pillars and front-side repeater light assemblies",
+      "zones": ["lf-door", "rf-door", "lf-fender", "rf-fender"],
+      "calibration_note": "Whenever a camera has been moved out of its original position (including service of the front-side repeater light assembly or B-pillar), calibration data must be cleared via the touchscreen.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Side camera is removed, installed, or moved out of its original position",
+        "Front-side repeater light assembly is removed or replaced",
+        "B-pillar is repaired or replaced where the camera is mounted"
+      ]
+    },
+    {
+      "component": "Rear Camera",
+      "system": "rear-camera",
+      "location": "Trunk lid / liftgate (varies by model)",
+      "zones": ["rear-bumper"],
+      "calibration_note": "Whenever a camera has been moved out of its original position, calibration data must be cleared via the touchscreen.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Rear camera is removed, installed, or moved out of its original position",
+        "Camera-mounted body component (trunk lid / liftgate / rear hatch) is serviced or replaced"
+      ]
+    },
+    {
+      "component": "Front Radar Sensor (radar-equipped vehicles only)",
+      "system": "front-radar",
+      "location": "Behind front fascia",
+      "zones": ["front-bumper"],
+      "calibration_note": "Per Tesla: perform radar calibration only if the front radar sensor likely moved outside its calibration tolerance during front fascia work (e.g. contact while removing the fascia). If calibration is required, the correction code is added separately. Newer Tesla Vision vehicles do not have a front radar sensor.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Front radar sensor is replaced",
+        "Front fascia / front bumper is removed and the radar sensor likely moved outside its calibration tolerance (e.g. contact during fascia removal)"
+      ]
+    },
+    {
+      "component": "Ultrasonic Parking Sensors (Tesla USS, USS-equipped vehicles only)",
+      "system": "park-assist",
+      "location": "Front and rear bumpers (ultrasonic sensors)",
+      "zones": ["front-bumper", "rear-bumper"],
+      "calibration_note": "Only applies to Tesla USS-equipped vehicles (legacy Model S/X and pre-2022 Model 3/Y). Newer Tesla Vision vehicles do not have ultrasonic parking sensors and require no parking sensor calibration.",
+      "trigger_lead": "Programming is required when:",
+      "triggers": [
+        "Tesla USS parking sensor is removed, installed, or replaced",
+        "Rear USS sensor address programming is required (PROC_USM_REAR_PROGRAM-USS-ADDRESSES) per Toolbox routine",
+        "TEST-RESET_PARK Toolbox routine is invoked"
+      ]
+    }
+  ]
+}

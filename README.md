@@ -67,7 +67,7 @@ These need trigger data sourced from AllData or OEM service portals and added as
   "components": [
     {
       "component": "Name of the component as the OEM calls it",
-      "system": "front-radar",  // one of: front-radar, front-camera, front-corner-radar, bsd, rear-camera, surround, park-assist, occupant, seat-belt, other
+      "system": "front-radar",  // one of: front-radar, front-camera, front-corner-radar, bsd, rear-camera, surround, park-assist, occupant, lanewatch, other
       "location": "Where the part physically lives on the vehicle",
       "zones": ["front-bumper"],  // which damage zones trigger this component (use "*" for post-collision universal)
       "calibration_note": "Procedural notes — targets required, scan tool, etc.",
@@ -86,7 +86,7 @@ These need trigger data sourced from AllData or OEM service portals and added as
 `front-bumper`, `windshield`, `liftgate`, `rear-bumper`, `rf-fender`, `rf-door`, `rr-door`, `rq-panel`, `lf-fender`, `lf-door`, `lr-door`, `lq-panel`, `*` (universal)
 
 ### System IDs (for reference)
-`front-camera`, `front-radar`, `front-corner-radar`, `bsd`, `rear-camera`, `surround`, `park-assist`, `occupant`, `seat-belt`, `other`
+`front-camera`, `front-radar`, `front-corner-radar`, `bsd`, `rear-camera`, `surround`, `park-assist`, `occupant`, `lanewatch`, `other`
 
 ---
 

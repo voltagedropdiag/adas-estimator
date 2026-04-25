@@ -5,128 +5,120 @@
     "document": "BMW Commissioning of the Sensors for the Driver Assistance Systems (Service Pack 2021, dated 6/25/2024)",
     "file": "BMWCalibrationRequirements_1.pdf",
     "portal": "aos.bmwgroup.com",
-    "note": "Equipment depends on vehicle option code (SA5xx series). Verify equipment before calibrating. If commissioning is necessary after repairs, observe the relevant information in the repair instructions."
+    "note": "BMW calls the procedure 'commissioning'. Equipment varies by vehicle option code (SA5xx series); verify equipment before calibrating."
   },
-  "general_requirements": "BMW uses 'commissioning' to describe the calibration/initialization procedure. Commissioning requirements depend on the specific sensor and whether the action is renewal (replacement), removal/installation or swap, or programming/coding. Several sensors also require commissioning after specific body repairs near the sensor.",
+  "general_requirements": "Several sensors require commissioning after specific body repairs near the sensor, even when the sensor itself has not been removed.",
 
   "components": [
     {
-      "component": "FRS - Front Radar Sensor",
+      "component": "Front Radar Sensor (FRS / FRSF)",
       "system": "front-radar",
-      "location": "Front of vehicle",
+      "location": "Front of vehicle, behind the front bumper",
       "zones": ["front-bumper"],
-      "equipment_required": "Option SA5AQ, SA5AT, or SA9QV",
-      "calibration_note": "Yes: commissioning required after renewal. Yes: commissioning required after removal/installation or swap. No: commissioning NOT required after programming/coding. Alignment via adjustment screw: depending on derivative.",
-      "trigger_lead": "Commissioning required when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Sensor is renewed (replaced)",
+        "Sensor is replaced",
         "Sensor is removed, installed, or swapped",
-        "Body repairs in the area of the radar sensor (e.g., renewing the radome, renewing the holder)"
+        "Body repairs in the area of the radar sensor (e.g., replacing the radome or holder)"
       ]
     },
     {
-      "component": "FRSF - Front Radar Sensor Long Range",
+      "component": "Lidar Sensor (LIDARVM)",
       "system": "front-radar",
-      "location": "Front of vehicle",
+      "location": "Front center of vehicle",
       "zones": ["front-bumper"],
-      "equipment_required": "Option SA5AU",
-      "calibration_note": "Yes: commissioning required after renewal. Yes: commissioning required after removal/installation or swap. No: commissioning NOT required after programming/coding. Alignment via adjustment screw: depending on derivative.",
-      "trigger_lead": "Commissioning required when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Reset correction angles when:",
       "triggers": [
-        "Sensor is renewed (replaced)",
-        "Sensor is removed, installed, or swapped",
-        "Body repairs in the area of the radar sensor (e.g., renewing the radome, renewing the holder)"
+        "Fault 'Misalignment' is stored after repair work"
       ]
     },
     {
-      "component": "HRSNL / HRSNR - Rear Radar Sensors Near Range (Left and Right)",
+      "component": "Rear Radar Sensor - Blind Spot (HRSNL / HRSNR)",
       "system": "bsd",
       "location": "Rear bumper area, left and right",
       "zones": ["rear-bumper", "lq-panel", "rq-panel"],
-      "equipment_required": "Option SA5AU or SA5AS",
-      "calibration_note": "Yes: commissioning required after renewal. Yes: commissioning required after removal/installation or swap. No: commissioning NOT required after programming/coding. Alignment via adjustment screw: No. Comply with the regulations for repainting.",
-      "trigger_lead": "Commissioning required when any of the following apply:",
+      "calibration_note": "Comply with the regulations for repainting — paint over the sensor affects emissions.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Sensor is renewed (replaced)",
+        "Sensor is replaced",
         "Sensor is removed, installed, or swapped",
-        "Defined body repairs in the area of the sensor (e.g., renewing the bumper, renewing the holder)"
+        "Body repairs in the area of the sensor (e.g., replacing the bumper or holder)"
       ]
     },
     {
-      "component": "SRSNVL / SRSNVR - Side Radar Sensor Short Range Front (Left and Right)",
+      "component": "Front Corner Radar (SRSNVL / SRSNVR)",
       "system": "front-corner-radar",
-      "location": "Front corners / front bumper area",
+      "location": "Front corners, behind the front bumper near each headlight",
       "zones": ["front-bumper", "lf-fender", "rf-fender"],
-      "equipment_required": "Option SA5AU or SA5AW",
-      "calibration_note": "Yes: commissioning required after renewal. Yes: commissioning required after removal/installation or swap. No: commissioning NOT required after programming/coding. Alignment via adjustment screw: No. Comply with the regulations for repainting.",
-      "trigger_lead": "Commissioning required when any of the following apply:",
+      "calibration_note": "Comply with the regulations for repainting — paint over the sensor affects emissions.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Sensor is renewed (replaced)",
+        "Sensor is replaced",
         "Sensor is removed, installed, or swapped",
         "Body repairs in the area of the sensor (e.g., bumper disassembly)"
       ]
     },
     {
-      "component": "SRSNML / SRSNMR - Center Close-Range Side Radar Sensor (Left and Right)",
+      "component": "Side Radar - Center Close Range (SRSNML / SRSNMR)",
       "system": "bsd",
-      "location": "Mid-body sides",
+      "location": "Mid-body sides, left and right",
       "zones": ["lf-door", "rf-door", "lr-door", "rr-door"],
-      "equipment_required": "Option SA5DX",
-      "calibration_note": "No: commissioning NOT required after renewal. Yes* (see below): required after removal/installation or swap. No: not required after programming/coding. No static or dynamic commissioning is required. If the fault 'Changed installation position detected' is stored, the correction angles in the radar sensor must be reset. If the fault 'Misalignment' is stored, the correction angles must be reset after the repair work. Use the service function.",
-      "trigger_lead": "Reset correction angles via service function only when any of the following faults are stored:",
+      "calibration_note": "",
+      "trigger_lead": "Reset correction angles when:",
       "triggers": [
-        "Fault 'Changed installation position detected' is stored (reset correction angles)",
-        "Fault 'Misalignment' is stored (reset correction angles after repair work)"
+        "Fault 'Changed installation position detected' is stored",
+        "Fault 'Misalignment' is stored after repair work"
       ]
     },
     {
-      "component": "ADCAML / ADCAMM - Autonomous Driving Camera (Low / Mid)",
+      "component": "Autonomous Driving Camera (ADCAML / ADCAMM)",
       "system": "front-camera",
-      "location": "Windshield",
+      "location": "Windshield, upper center",
       "zones": ["windshield", "front-bumper"],
-      "equipment_required": "Basic version (ADCAML) / Option SA5AU (ADCAMM)",
-      "calibration_note": "No: commissioning NOT required after renewal. Yes* (see below): required after removal/installation or swap. Calibration values must be reset as part of replacing the windshield or removing/installing the same sensor, or after a swap. Use the service function.",
-      "trigger_lead": "Calibration values must be reset (via service function) when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Replacing the windshield",
-        "Removing or installing the same sensor",
-        "Sensor swap"
+        "Windshield is replaced",
+        "Sensor is removed and installed",
+        "Sensor is swapped"
       ]
     },
     {
-      "component": "Augmented Reality Camera (connected to HU-H Headunit High)",
+      "component": "KAFAS Front Camera (Camera-based Driver Assistance Module)",
       "system": "front-camera",
-      "location": "Windshield area",
-      "zones": ["windshield"],
-      "equipment_required": "Option SA6U3",
-      "calibration_note": "No: commissioning NOT required after renewal. Yes* (see below): required after removal/installation or swap. Calibration values must be reset as part of replacing the windshield or removing/installing the same sensor, or after a swap. Use the service function.",
-      "trigger_lead": "Calibration values must be reset (via service function) when any of the following apply:",
+      "location": "Windshield, upper center",
+      "zones": ["windshield", "front-bumper"],
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Replacing the windshield",
-        "Removing or installing the same sensor",
-        "Sensor swap"
+        "Windshield is replaced",
+        "Sensor is removed and installed",
+        "Sensor is swapped"
       ]
     },
     {
-      "component": "Lidar Sensor (LIDARVM - Lidar Control Unit, Front Center)",
-      "system": "front-radar",
-      "location": "Front center of vehicle",
-      "zones": ["front-bumper"],
-      "equipment_required": "Option SA5DX",
-      "calibration_note": "No: commissioning NOT required after renewal. Yes* (see below): required after removal/installation or swap. No static or dynamic commissioning is required. If the fault 'Misalignment' is stored, the correction angles must be reset after the repair work. Use the service function.",
-      "trigger_lead": "Reset correction angles via service function only when any of the following faults are stored:",
+      "component": "Augmented Reality Camera",
+      "system": "front-camera",
+      "location": "Windshield area (signal path connects to the HU-H radio)",
+      "zones": ["windshield"],
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Fault 'Misalignment' is stored (reset correction angles after repair work)"
+        "Windshield is replaced",
+        "Sensor is removed and installed",
+        "Sensor is swapped"
       ]
     }
   ],
 
   "not_requiring_commissioning": [
-    "RVC - Rear View Camera (SA5DM)",
-    "Front, Rear, Left, and Right Autonomous Parking Cameras (SA5DN, connected to UCAP)",
-    "Gesture Recognition Camera (SA6U7, integrated into FZD Roof Function Center)",
-    "Interior Camera (SA4NR, integrated into FZD Roof Function Center)",
-    "Driver Camera System (SA6U3, integrated into Display Cluster)",
-    "Ultrasonic Sensors (front, side front, rear, side rear — SA5DM/SA5DN/SA5DW, connected to UCAP/USS)"
+    "RVC - Rear View Camera",
+    "Front, Rear, Left, and Right Autonomous Parking Cameras (connected to UCAP)",
+    "Gesture Recognition Camera (integrated into FZD Roof Function Center)",
+    "Interior Camera (integrated into FZD Roof Function Center)",
+    "Driver Camera System (integrated into Display Cluster)",
+    "Ultrasonic Sensors (front, side front, rear, side rear — connected to UCAP/USS)"
   ]
 }

@@ -1,0 +1,85 @@
+{
+  "make": "Hyundai",
+  "includes_brands": ["Hyundai", "Kia", "Genesis"],
+  "source": {
+    "document": "Hyundai Motor Group service information; Opus ADAS Map inspection report (2023 Kia Sorento Hybrid SX Prestige AWD); Hyundai / Kia / Genesis Front Bumper Off Requirements and Blind Spot Bumper Off Requirements model-year matrices.",
+    "file": "makes/sources/hyundai/ (Opus map + bumper-off matrices)",
+    "portal": "kiatechinfo.snapon.com / hyundaitechinfo.com / genesistechnical.com",
+    "note": "Hyundai, Kia, and Genesis share Hyundai Motor Group ADAS architecture and calibration procedures. Per the bumper-off matrices, specific model-years require or skip particular calibrations — verify against the matrix when scoping a specific vehicle."
+  },
+  "general_requirements": "Per Kia / Hyundai Pre and Post Scanning Position Statement: after a collision, both pre-repair and post-repair scans are required to test for DTCs in airbag, body, engine, powertrain, and ADAS modules.",
+
+  "components": [
+    {
+      "component": "Front Radar Sensor (SCC / AEB / FCW)",
+      "system": "front-radar",
+      "location": "Front Bumper",
+      "zones": ["front-bumper"],
+      "calibration_note": "Bumper assembly removal is required for the Vertical Angle Inspection portion of the procedure; the bumper is reinstalled for target aiming. Additional bumper removal may be required if aiming results are not within specifications.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Front radar sensor is installed or replaced",
+        "Damage occurs within the immediate surrounding areas or attached parts",
+        "A DTC for failure of calibration is present (follow diagnostic procedures first)",
+        "The recognition and detection function has a problem"
+      ]
+    },
+    {
+      "component": "Front View Camera (LDW / Lane Keep)",
+      "system": "front-camera",
+      "location": "Windshield, upper center",
+      "zones": ["windshield"],
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Windshield is removed and reinstalled",
+        "Windshield is replaced"
+      ]
+    },
+    {
+      "component": "Front Corner Radar Sensors",
+      "system": "front-corner-radar",
+      "location": "Behind front bumper corners, left and right (junction-assist / front cross-traffic radar on equipped vehicles)",
+      "zones": ["front-bumper"],
+      "calibration_note": "Front corner radars are present on equipped trims (typically newer Genesis and higher Hyundai/Kia trims with front cross-traffic or junction-assist). Verify the vehicle is equipped before calibrating.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Vehicle has been in any accident affecting the front bumper",
+        "Front bumper is replaced",
+        "Front corner radar sensor is removed, installed, or replaced"
+      ]
+    },
+    {
+      "component": "Surround View Monitor (SVM) Cameras",
+      "system": "surround",
+      "location": "Front Bumper / Side Mirrors / Trunk Lid",
+      "zones": ["front-bumper", "rear-bumper", "lf-door", "rf-door"],
+      "calibration_note": "SVM is trim-dependent — verify the vehicle is equipped before calibrating. Mirror replacement triggers calibration only when the SVM camera is integrated into the mirror assembly.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Body repairs or operations cause the focus of a wide camera to change",
+        "Any SVM camera is removed, installed, or replaced",
+        "An outside mirror containing an SVM camera is replaced",
+        "The Surround View Monitor (SVM) unit is replaced"
+      ]
+    },
+    {
+      "component": "Blind Spot / Rear Corner Radar Sensors",
+      "system": "bsd",
+      "location": "Behind rear bumper, left and right (rear corner radars)",
+      "zones": ["rear-bumper", "lq-panel", "rq-panel"],
+      "calibration_note": "Per Hyundai/Kia/Genesis rear corner radar service info: a blind spot angle check must be performed after any rear bumper accident. Per the Blind Spot Bumper Off Requirements matrix, rear bumper R&I also triggers calibration on most current models — verify against the matrix for the specific model-year.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Vehicle has been in any accident affecting the rear bumper",
+        "Vehicle has been in any accident affecting the rear quarter panel",
+        "Rear bumper is removed and installed (on models requiring bumper-off BSD calibration per matrix)",
+        "Rear bumper is replaced",
+        "Rear quarter panel is repaired or replaced in the sensor mounting area",
+        "Blind spot / rear corner radar sensor is removed, installed, or replaced"
+      ]
+    }
+  ],
+
+  "notes_for_other_components": "Per Opus ADAS Map listing and shop research: no published occupant classification calibration for Hyundai/Kia/Genesis. Standalone rear backup cameras (separate from SVM) do not require calibration on these vehicles. No documented parking sensor calibration."
+}

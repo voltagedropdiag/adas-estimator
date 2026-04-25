@@ -2,12 +2,12 @@
   "make": "Subaru",
   "includes_brands": ["Subaru"],
   "source": {
-    "document": "Subaru service information — trigger language reproduced from Subaru service info as documented in Opus ADAS inspection reports. Additional reference: Subaru Pre and Post-Repair Scanning Position Statement.",
-    "file": "23_Subaru_Forester.pdf (Opus report citing Subaru service info), Subaru_Pos_PrePostScanning717.pdf",
+    "document": "Subaru service information (EyeSight Diagnostics General Description; Rear Bumper service info for blind spot sensor repair-prohibited area). Additional references: Subaru Pre and Post-Repair Scanning Position Statement; Opus ADAS Map inspection report (2023 Forester Wilderness).",
+    "file": "makes/sources/subaru/eyesight_caution_even_minor_collision.png, makes/sources/subaru/rear_bumper_repair_prohibited_area.png, makes/sources/subaru/opus_adas_map_2023_forester.pdf",
     "portal": "techinfo.subaru.com",
-    "note": "Subaru defines a collision as any damage beyond cosmetic body panel distortion. Calibrations may be required even if no warning messages are displayed."
+    "note": "EyeSight is camera-only — Subaru does not use a front radar. Per Subaru service info: stereo camera axis may be displaced even in a minor collision, even when the EyeSight warning light is not illuminated."
   },
-  "general_requirements": "Per Subaru Pre/Post-Repair Scanning position: pre-repair scanning is required; post-repair scanning is required. Subaru collision calibration requirements note that even minor collisions may affect camera axis alignment.",
+  "general_requirements": "Per Subaru Pre/Post-Repair Scanning position: pre-repair and post-repair scanning are required. EyeSight stereo camera adjustment is required after any collision, even when no warning messages are displayed.",
 
   "components": [
     {
@@ -15,31 +15,29 @@
       "system": "front-camera",
       "location": "Windshield",
       "zones": ["windshield", "front-bumper"],
-      "calibration_note": "ADAS targets required for system calibration; dynamic drive required to finalize calibration. Clear Active Lane Keep System Learning after a four-wheel alignment or suspension work. Perform VDC 0-point adjustment. Use OE glass for replacements. Ensure tire inflation pressure is correct, vehicle is unloaded, and fuel tank is full.",
-      "trigger_lead": "Calibrate EyeSight Camera System if any of the following occur:",
+      "calibration_note": "Use OE glass for windshield replacements. Per Subaru EyeSight service info: the stereo camera axis may be displaced even in a minor collision — calibration is required even if the EyeSight warning light is not illuminated or the Stereo Camera Temporary Stop message is not displayed. Do not apply impact or force to the stereo camera; do not disassemble, modify, or change the installation position of the camera.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Windshield, headliner, overhead console, or stereo camera is removed, installed, replaced, adjusted, or repaired",
-        "Vehicle was involved in a collision exceeding cosmetic body panel distortion"
-      ],
-      "additional_notes": [
-        "Even minor collisions may affect camera axis alignment, requiring recalibration",
-        "Subaru defines a collision as any damage beyond cosmetic body panel distortion",
-        "Calibrate even if no warning messages are displayed"
+        "Stereo camera is removed, installed, or replaced",
+        "Windshield is replaced, removed, or installed",
+        "Vehicle is in for repair after any collision, even minor (per Subaru, camera axis can be displaced without setting a warning)",
+        "Headliner or overhead console is removed, installed, or repaired in the camera mounting area"
       ]
     },
     {
       "component": "Blind Spot Sensors",
       "system": "bsd",
-      "location": "Rear Quarter Panels",
+      "location": "Rear Quarter Panels (behind rear bumper corners)",
       "zones": ["lq-panel", "rq-panel", "rear-bumper"],
-      "calibration_note": "ADAS targets required for system calibration. Before calibration: verify tire inflation pressure is correct, vehicle does not have load, and fuel tank is fully filled. Subaru also states the rear bumper cover should be replaced if there is any damage within the sensor viewing area (inside or outside).",
-      "trigger_lead": "Calibrate Blind Spot Detection (BSD) when any of the following are removed, installed, replaced, or repairs are performed in the immediate mounting area:",
+      "calibration_note": "Subaru specifies a repair-prohibited area on the rear bumper around each blind spot sensor. If any collision trace, dent, scuff/chip, or crack is present inside that area, the rear bumper must be replaced — then check the radar installation condition and perform the radar axis adjustment. Shop practice: perform blind spot calibration when rear quarter panel is damaged in a collision, regardless of whether the sensor area itself shows visible damage.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Quarter panel",
-        "Rear body panel",
-        "Sensor",
-        "Sensor bracket",
-        "Rear bumper is damaged (BSD calibration required; replace rear bumper cover if damage is within sensor viewing area)"
+        "Rear bumper has collision trace, dent, scuff/chip, or crack in the repair-prohibited area around the sensor (replace bumper, then calibrate)",
+        "Rear quarter panel is damaged in a collision",
+        "Rear quarter panel is removed, installed, replaced, or repaired in the sensor mounting area",
+        "Rear body panel is removed, installed, replaced, or repaired in the sensor mounting area",
+        "Sensor is removed, installed, or replaced",
+        "Sensor bracket is removed, installed, or replaced"
       ]
     },
     {
@@ -47,8 +45,8 @@
       "system": "park-assist",
       "location": "Rear Bumper",
       "zones": ["rear-bumper"],
-      "calibration_note": "Initialization procedure. Sonar Height Angle Inspection required.",
-      "trigger_lead": "Perform Sonar Height Angle Inspection when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Rear bumper is replaced",
         "Sensors are removed, installed, or replaced"
@@ -57,13 +55,13 @@
     {
       "component": "Occupant Detection System",
       "system": "occupant",
-      "location": "Passenger Seat",
+      "location": "Front Passenger Seat",
       "zones": ["*"],
-      "calibration_note": "Calibration and zeroing required. The seat must be upright and empty, dry, and free from any aftermarket covering when performing the zeroing. The zero procedure may need to be repeated more than once in some instances. System should be inspected if vehicle has been in a collision.",
-      "trigger_lead": "Calibrate and zero the Occupant Detection System when any of the following apply:",
+      "calibration_note": "Per Subaru service info: the Occupant Detection System must be calibrated and zeroed any time a seat component is removed, loosened, or replaced; the system should also be inspected after any collision.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Any seat component is removed, loosened, or replaced",
-        "Vehicle has been in a collision (inspection required)"
+        "Vehicle is in for repair after any accident or collision"
       ]
     }
   ]

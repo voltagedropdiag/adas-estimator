@@ -1,0 +1,13 @@
+# Claude Code local cache (memory, image cache, conversation state)
+.claude/
+
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor / temp files
+*.swp
+*~
+.vscode/
+.idea/

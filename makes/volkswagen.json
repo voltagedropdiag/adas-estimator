@@ -2,12 +2,12 @@
   "make": "Volkswagen",
   "includes_brands": ["Volkswagen", "Audi"],
   "source": {
-    "document": "Volkswagen Body Repair Manual procedures — trigger language reproduced from VW repair manual as documented in Opus ADAS inspection reports. Per I-CAR, VW and Audi do not have separate scan/calibration position statements; requirements are specified within the body repair manual procedures.",
-    "file": "24_vw_jetta.pdf (Opus report citing VW repair manual)",
+    "document": "Volkswagen Group service information (VW Body Repair Manual, rear radar / Lane Change Assist, Peripheral Camera System Calibration -VAS 721 001-).",
+    "file": "makes/sources/volkswagen/ (multiple VW Group extracts)",
     "portal": "erwin.volkswagen.com (VW) / erwin.audi.com (Audi)",
-    "note": "Audi uses the same underlying VW Group service information structure. Calibration procedures and triggers are similar across the VW Group. SVM (Software Version Management) coding and programming is required for most modules when replaced."
+    "note": "Audi uses the same underlying VW Group service information. Calibration procedures and triggers are the same across the VW Group. No published parking sensor calibration or occupant classification calibration at this time — those toggles auto-off when VW/Audi is selected."
   },
-  "general_requirements": "VW/Audi calibrations require the factory-level scan tool (ODIS/VAS) and typically involve SVM coding and programming when modules are replaced. Targets are required for most camera and radar calibrations.",
+  "general_requirements": "VW/Audi calibrations follow the procedures in the VW Group body repair manual. Triggers are specified per-component rather than in a standalone position statement.",
 
   "components": [
     {
@@ -15,12 +15,12 @@
       "system": "front-radar",
       "location": "Front Bumper",
       "zones": ["front-bumper"],
-      "calibration_note": "ADAS targets required for system calibration. SVM coding and programming required if module is replaced.",
-      "trigger_lead": "The Adaptive Cruise Control / Front Assist Module requires SVM coding and programming if replaced. Calibration is required when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Adaptive cruise control module / radar sensor is replaced",
-        "Radiator support is set to the service position",
         "Adaptive cruise control module / radar sensor is removed and installed",
+        "Radiator support is set to the service position",
         "Radiator support is replaced",
         "Adjustments to the rear toe / thrust angle are made",
         "Changes to the vehicle's ride height are made"
@@ -31,15 +31,47 @@
       "system": "front-camera",
       "location": "Windshield",
       "zones": ["windshield", "front-bumper"],
-      "calibration_note": "ADAS targets required for system calibration. SVM coding and programming required if module is replaced.",
-      "trigger_lead": "The Driver Assistance Front Camera control module requires SVM coding and programming if replaced. Calibration is required when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "No or incorrect basic setting / adaptation fault is stored in the event memory",
         "Front camera is replaced",
-        "Windshield was replaced or removed",
+        "Windshield is replaced or removed",
+        "No or incorrect basic setting / adaptation fault is stored in the event memory",
         "Adjustments to the rear toe / thrust angle are performed",
         "Repairs are made to the chassis that influence body height",
-        "Level control system sensor was readapted on vehicles with damping regulation"
+        "Level control system sensor is readapted on vehicles with damping regulation"
+      ]
+    },
+    {
+      "component": "Rear Radar (Lane Change Assist / Side Assist)",
+      "system": "bsd",
+      "location": "Behind rear bumper, left and right",
+      "zones": ["rear-bumper", "lq-panel", "rq-panel"],
+      "calibration_note": "Per VW: the rear radar must be calibrated after every removal and installation on vehicles with Lane Change Assist.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Rear radar is removed and installed",
+        "Rear radar is replaced",
+        "Rear bumper is removed and installed"
+      ]
+    },
+    {
+      "component": "Peripheral Camera System (Surround View / Area View / Top View)",
+      "system": "surround",
+      "location": "Four cameras: front grille/bumper, rear, and left/right outer mirrors",
+      "zones": ["front-bumper", "rear-bumper", "lf-door", "rf-door"],
+      "calibration_note": "Calibration performed with VAS 721 001 calibration system. Also required after wheel alignments and any change in vehicle standing height (>5 mm on one axle or >10 mm overall).",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "One or more cameras is replaced",
+        "Peripheral Camera Control Module -J928- is replaced",
+        "Peripheral Camera Control Module -J928- software is flashed",
+        "Data set is recorded on the Peripheral Camera Control Module -J928-",
+        "Repair work is performed on components in which a camera is installed, or that influence the location of the camera",
+        "Wheel alignment is performed",
+        "The overlap range of individual cameras is adjusted",
+        "Standing height of one axle changes by more than 5 mm",
+        "Standing height of the entire vehicle changes by more than 10 mm"
       ]
     }
   ]

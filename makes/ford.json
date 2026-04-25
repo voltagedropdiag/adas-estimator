@@ -5,9 +5,9 @@
     "document": "Ford and Lincoln ADAS Job Aid (CPR 11/2021)",
     "file": "ford_AdvanceddriverassistancesystemsADASJobAidD6.pdf",
     "portal": "motorcraftservice.com",
-    "note": "Always refer to the Ford Workshop Manual (WSM) for description and operation, component location, diagnosis and testing, and repair and calibration."
+    "note": "Always refer to the Ford Workshop Manual for the specific vehicle."
   },
-  "general_requirements": "Driver assist systems are intended to work on the vehicle as it is designed. Any aftermarket alteration could cause a system to malfunction or not accept a correct calibration.",
+  "general_requirements": "Driver assist systems are calibrated for the vehicle as designed. Any aftermarket alteration could cause a system to malfunction or not accept a correct calibration.",
 
   "components": [
     {
@@ -15,8 +15,8 @@
       "system": "front-camera",
       "location": "Top edge of the windshield, below the interior rear view mirror",
       "zones": ["windshield", "front-bumper"],
-      "calibration_note": "Requires IPMA Camera Alignment. Lane keeping systems are developed and calibrated based on manufacturer's specified ride height and wheel/tire combinations — if ride height or wheels have been altered, this will affect system accuracy. Programmable Module Installation required when a new IPMA is installed.",
-      "trigger_lead": "Calibration is required for the Lane Keeping Camera when any of the following apply:",
+      "calibration_note": "Lane keeping systems are calibrated based on the manufacturer's specified ride height and wheel/tire combinations. If ride height or wheels have been altered, this will affect system accuracy.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Windshield is replaced",
         "Camera is replaced",
@@ -30,14 +30,14 @@
     {
       "component": "Cruise Control Module and Radar Sensor",
       "system": "front-radar",
-      "location": "In the front of the vehicle, typically behind the front bumper cover. Radar sensor is in an opening in the front fascia or bumper behind an unpainted plastic cover.",
+      "location": "Behind the front bumper cover, in an opening in the front fascia or bumper behind an unpainted plastic cover",
       "zones": ["front-bumper"],
-      "calibration_note": "Calibration consists of a vertical mechanical adjustment followed by a horizontal alignment. After the vertical check and adjustment, a horizontal alignment procedure must be performed during the road test using the calibration routine in the diagnostic scan tool. Programmable Module Installation required when a new CCM is installed.",
-      "trigger_lead": "Calibration is required for the Cruise Control Radar Sensor when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "New CCM is installed",
-        "Vehicle has been in an accident (radar sensor requires vertical check and adjustment; horizontal alignment performed during road test)",
-        "Sensor itself is removed from the vehicle for access",
+        "Vehicle has been in an accident",
+        "Sensor is removed from the vehicle for access",
         "Bracket support in which the sensor is mounted is removed from the vehicle for access"
       ]
     },
@@ -46,12 +46,11 @@
       "system": "surround",
       "location": "Center of front grille, below center emblem",
       "zones": ["front-bumper"],
-      "calibration_note": "Elevation System Check and Azimuth System Check must be performed. Parking aid camera alignment required when any camera is replaced or removed from the vehicle. 360 degree view camera alignment required when a camera or any body component camera is attached to is removed or adjusted.",
-      "trigger_lead": "Calibration is required for the Front 360 Camera when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Any camera is replaced or removed from the vehicle (parking aid camera alignment required)",
-        "Camera or any body component camera is attached to is removed or adjusted (360 degree view camera alignment required)",
-        "Elevation System Check and Azimuth System Check must be performed"
+        "Any camera is replaced or removed from the vehicle",
+        "Camera or any body component the camera is attached to is removed or adjusted"
       ]
     },
     {
@@ -59,12 +58,11 @@
       "system": "rear-camera",
       "location": "Tailgate on pickups, rear decklid on passenger cars, liftgate on SUVs",
       "zones": ["rear-bumper", "liftgate"],
-      "calibration_note": "Elevation System Check and Azimuth System Check must be performed.",
-      "trigger_lead": "Calibration is required for the Rear 360 Camera when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Any camera is replaced or removed from the vehicle",
-        "Camera or any body component camera is attached to is removed or adjusted",
-        "Elevation System Check and Azimuth System Check must be performed"
+        "Camera or any body component the camera is attached to is removed or adjusted"
       ]
     },
     {
@@ -72,23 +70,11 @@
       "system": "surround",
       "location": "Underside of LH and RH exterior rear view mirrors",
       "zones": ["lf-door", "rf-door"],
-      "calibration_note": "Azimuth System Check must be performed.",
-      "trigger_lead": "Calibration is required for the LH/RH Side 360 Camera when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Camera is replaced or removed from the vehicle",
-        "Camera or any body component camera is attached to (outside rearview mirror) is removed or adjusted",
-        "Azimuth System Check must be performed"
-      ]
-    },
-    {
-      "component": "Side Obstacle Detection Modules (SODL / SODR)",
-      "system": "bsd",
-      "location": "Behind the rear bumper on both sides of the vehicle",
-      "zones": ["rear-bumper", "lq-panel", "rq-panel"],
-      "calibration_note": "Programmable Module Installation required after replacement. Ford job aid does not specify additional learn procedure beyond PMI.",
-      "trigger_lead": "Per Ford job aid, the following applies to SODL/SODR:",
-      "triggers": [
-        "New SODL or SODR module is installed — Programmable Module Installation required"
+        "Outside rearview mirror is removed, adjusted, or replaced"
       ]
     },
     {
@@ -96,8 +82,8 @@
       "system": "park-assist",
       "location": "Four sensors along the front bumper and four sensors along the rear bumper",
       "zones": ["front-bumper", "rear-bumper"],
-      "calibration_note": "Azimuth System Check must be performed after sensor service.",
-      "trigger_lead": "Calibration is required for Parking Aid Sensors when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Sensor is removed and reinstalled",
         "Sensor is replaced"
@@ -108,25 +94,11 @@
       "system": "park-assist",
       "location": "Front bumper on each side of the vehicle",
       "zones": ["front-bumper"],
-      "calibration_note": "Azimuth System Check must be performed after sensor service.",
-      "trigger_lead": "Calibration is required for Active Park Assist Sensors when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
         "Sensor is removed and reinstalled",
         "Sensor is replaced"
-      ]
-    },
-    {
-      "component": "Head Up Display Module",
-      "system": "other",
-      "location": "Top of the instrument panel on the driver's side at the base of the windshield",
-      "zones": ["windshield"],
-      "calibration_note": "HUD Calibration required. If system is not calibrated, images may be distorted or display improperly. Programmable Module Installation required when a new HUD is installed.",
-      "trigger_lead": "Calibration is required for the Head Up Display Module when any of the following apply:",
-      "triggers": [
-        "A new HUD is installed",
-        "The HUD is removed and reinstalled or replaced",
-        "The instrument panel is removed and installed or replaced",
-        "A new windshield is installed"
       ]
     }
   ]

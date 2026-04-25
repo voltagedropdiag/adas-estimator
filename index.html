@@ -8,9 +8,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f4f5f7;color:#222;font-size:14px}
 .wrap{max-width:920px;margin:0 auto;padding:1rem}
-.hdr{background:#fff;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #e0e0e0}
-.hdr-title{font-size:20px;font-weight:700;color:#1a1a1a}
-.hdr-sub{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.hdr{background:#fff;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #e0e0e0;display:flex;align-items:center;gap:14px}
+.hdr-logo{height:60px;width:auto;flex-shrink:0}
+.hdr-text{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.hdr-title{font-size:18px;font-weight:700;color:#1a1a1a;line-height:1.2}
+.hdr-sub{font-size:10.5px;color:#666;letter-spacing:0.6px;text-transform:uppercase;margin-top:4px;line-height:1.3}
+.hdr-cta{font-size:12px;color:#1a1a1a;margin-top:5px;line-height:1.2}
+.hdr-cta a{color:#185FA5;font-weight:700;text-decoration:none}
+.hdr-cta a:hover{text-decoration:underline}
 .step-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;color:#666;text-transform:uppercase;margin:1rem 0 6px 0}
 .card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:1rem 1.25rem;margin-bottom:.75rem}
 input,select{font-size:13px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;background:#fff;color:#222;width:100%;outline:none}
@@ -24,9 +29,9 @@ input:focus,select:focus{border-color:#185FA5}
 .veh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
 .car-wrap{position:relative;width:100%;max-width:460px;margin:0 auto}
 .car-wrap img{width:100%;display:block;border-radius:8px;background:#f0f0f0}
-.zone{position:absolute;cursor:pointer;border-radius:6px;border:2px solid rgba(55,138,221,0.4);background:rgba(55,138,221,0.08);transition:all .15s}
-.zone:hover{background:rgba(55,138,221,0.22);border-color:rgba(55,138,221,0.8)}
-.zone.hit{background:rgba(226,75,74,0.28);border-color:#E24B4A;box-shadow:0 0 0 3px rgba(226,75,74,0.2)}
+.zone{position:absolute;cursor:pointer;width:22px;height:22px;border-radius:50%;border:2px solid rgba(55,138,221,0.75);background:rgba(55,138,221,0.35);transform:translate(-50%,-50%);transition:all .15s}
+.zone:hover{background:rgba(55,138,221,0.6);border-color:rgba(55,138,221,1)}
+.zone.hit{background:#E24B4A;border-color:#E24B4A;box-shadow:0 0 0 3px rgba(226,75,74,0.28)}
 .zone-tip{position:absolute;background:rgba(20,20,20,0.85);color:#fff;font-size:10px;padding:2px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;left:50%;transform:translateX(-50%);bottom:calc(100% + 4px);opacity:0;transition:opacity .1s;z-index:10}
 .zone:hover .zone-tip,.zone.hit .zone-tip{opacity:1}
 .legend{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:11px;color:#666}
@@ -69,20 +74,40 @@ input:focus,select:focus{border-color:#185FA5}
 .veh-header{padding:12px 14px;background:#f0f4fa;border-left:3px solid #185FA5;border-radius:4px;margin-bottom:14px}
 .veh-header b{color:#1a1a1a}
 .loading{text-align:center;color:#888;padding:1rem;font-size:12px}
+.report-diagram{position:relative;width:100%;max-width:380px;margin:10px auto 4px;page-break-inside:avoid;break-inside:avoid}
+.report-diagram img{width:100%;display:block;border-radius:6px}
+.report-diagram-overlay{position:absolute;inset:0;pointer-events:none}
+.rd-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:#E24B4A;border:2px solid #B23736;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(226,75,74,0.28)}
 @media print{
   .btn-gen,.btn-sm,.btn-pdf,.zone,.step-lbl,#step1-card,#step2-card,#step3-card,#step4-card{display:none}
   body{background:#fff;font-size:11px}
   .card{border:none;padding:4px 0}
   .cal-item{break-inside:avoid}
+  .report-diagram{max-width:280px}
+  .rd-dot{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .hdr,.report-diagram img,.rd-dot,.cal-item{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+<script defer>
+window.addEventListener('DOMContentLoaded',()=>{
+  if(typeof pdfjsLib!=='undefined'){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+});
+</script>
 </head>
 <body>
 <div class="wrap">
 
 <div class="hdr">
-  <div class="hdr-title">ADAS Calibration Estimator</div>
-  <div class="hdr-sub">OEM Scan Tools &amp; Software · Mobile ADAS</div>
+  <img class="hdr-logo" src="logo.png" alt="Voltage Drop Diagnostics"/>
+  <div class="hdr-text">
+    <div class="hdr-title">ADAS Calibration Estimator</div>
+    <div class="hdr-sub">Mobile ADAS · Programming · Diagnostics · Key Programming</div>
+    <div class="hdr-cta">To schedule an appointment, call <a href="tel:+17246109777">724-610-9777</a></div>
+  </div>
 </div>
 
 <div class="step-lbl">Step 1 — Vehicle identification</div>
@@ -102,10 +127,20 @@ input:focus,select:focus{border-color:#185FA5}
   <div id="vehMatch" style="display:none"></div>
 </div>
 
-<div class="step-lbl">Step 2 — Click damage zones on vehicle</div>
+<div class="step-lbl">Step 2 — Attach pre-scan report (optional)</div>
 <div class="card" id="step2-card">
+  <div class="sys-note">Upload the OEM scan-tool pre-scan PDF. The file is parsed to auto-fill the VIN in Step 1 (verify after decode — OCR can misread a character). Systems below stay manual for now. File is also attached to the report for documentation.</div>
+  <div class="row">
+    <input type="file" id="scanPdf" accept="application/pdf,.pdf" onchange="onScanPdfChanged()" style="padding:6px"/>
+    <button class="btn-sm" onclick="clearScanPdf()" type="button">Clear</button>
+  </div>
+  <div id="scanPdfStatus" style="font-size:12px;color:#666;margin-top:6px"></div>
+</div>
+
+<div class="step-lbl">Step 3 — Click damage zones on vehicle</div>
+<div class="card" id="step3-card">
   <div class="car-wrap" id="carWrap">
-    <img id="carImg" alt="Vehicle top-down" onload="buildZones()" src="car.svg" onerror="this.src='data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 300\'><rect width=\'800\' height=\'300\' fill=\'%23e8edf2\'/><g fill=\'%23b8c5d8\' stroke=\'%237a8599\' stroke-width=\'1.5\'><rect x=\'70\' y=\'90\' width=\'660\' height=\'120\' rx=\'25\'/><rect x=\'90\' y=\'60\' width=\'620\' height=\'35\' rx=\'8\' fill=\'%23a8b5c8\'/><rect x=\'90\' y=\'205\' width=\'620\' height=\'35\' rx=\'8\' fill=\'%23a8b5c8\'/><rect x=\'275\' y=\'115\' width=\'250\' height=\'70\' fill=\'%23889aad\' rx=\'10\'/></g><text x=\'400\' y=\'158\' text-anchor=\'middle\' fill=\'%23445\' font-family=\'Arial\' font-size=\'13\' font-weight=\'600\'>Vehicle top-down view</text></svg>')"/>
+    <img id="carImg" alt="Vehicle top-down" onload="buildZones()" src="car.png" onerror="this.onerror=null;this.src='car.svg'"/>
     <div id="zonesDiv"></div>
   </div>
   <div class="legend">
@@ -115,8 +150,8 @@ input:focus,select:focus{border-color:#185FA5}
   <div class="sel-zones" id="selZones">No damage zones selected</div>
 </div>
 
-<div class="step-lbl">Step 3 — Confirm systems on this vehicle</div>
-<div class="card" id="step3-card">
+<div class="step-lbl">Step 4 — Confirm systems on this vehicle</div>
+<div class="card" id="step4-card">
   <div class="sys-note" id="sysNote">Toggle OFF any system not installed. Verify with visual inspection or VIN build data. NHTSA data is partial — many trim-dependent systems aren't covered.</div>
   <div class="sys-grid" id="sysGrid">
     <div class="sys-tog on" data-sys="front-camera" onclick="toggleSys(this)"><span>Forward-facing camera</span><span class="pip"></span></div>
@@ -127,19 +162,9 @@ input:focus,select:focus{border-color:#185FA5}
     <div class="sys-tog off" data-sys="surround" onclick="toggleSys(this)"><span>Surround view / 360°</span><span class="pip"></span></div>
     <div class="sys-tog on" data-sys="park-assist" onclick="toggleSys(this)"><span>Park assist / sonar</span><span class="pip"></span></div>
     <div class="sys-tog on" data-sys="occupant" onclick="toggleSys(this)"><span>Occupant classification</span><span class="pip"></span></div>
-    <div class="sys-tog on" data-sys="seat-belt" onclick="toggleSys(this)"><span>Seat belt</span><span class="pip"></span></div>
+    <div class="sys-tog off" data-sys="lanewatch" onclick="toggleSys(this)"><span>LaneWatch (Honda)</span><span class="pip"></span></div>
     <div class="sys-tog off" data-sys="other" onclick="toggleSys(this)"><span>HUD / other</span><span class="pip"></span></div>
   </div>
-</div>
-
-<div class="step-lbl">Step 4 — Attach pre-scan report (optional)</div>
-<div class="card" id="step4-card">
-  <div class="sys-note">Upload the OEM scan tool pre-scan PDF. The filename and upload timestamp will appear on the generated report for documentation. Use your OEM scan tool's "save as PDF" feature.</div>
-  <div class="row">
-    <input type="file" id="scanPdf" accept="application/pdf,.pdf" onchange="onScanPdfChanged()" style="padding:6px"/>
-    <button class="btn-sm" onclick="clearScanPdf()" type="button">Clear</button>
-  </div>
-  <div id="scanPdfStatus" style="font-size:12px;color:#666;margin-top:6px"></div>
 </div>
 
 <button class="btn-gen" onclick="generateReport()">Generate Calibration Report</button>
@@ -212,24 +237,30 @@ const BRAND_TO_MAKE_FILE = {
   Mazda:'mazda',
   'Mercedes-Benz':'mercedes-benz',
   Subaru:'subaru',
+  Tesla:'tesla',
+  Hyundai:'hyundai', Kia:'hyundai', Genesis:'hyundai',
 };
 
 // ============================================================================
 // ZONE DEFINITIONS
 // ============================================================================
+// Vehicle image: front on RIGHT, trunk on LEFT.
+// LHD orientation → driver's (L) side is top of image, passenger's (R) side is bottom.
+// Zones render as fixed-size circles centered at (cx, cy) — percentages of image.
+// Liftgate intentionally omitted: liftgate damage always implies rear-bumper damage
+// (components that previously listed 'liftgate' still match via 'rear-bumper').
 const ZONE_DEFS = [
-  {id:'front-bumper', label:'Front bumper', l:7,  t:18, w:7,  h:62},
-  {id:'windshield',   label:'Windshield',   l:34, t:20, w:10, h:58},
-  {id:'liftgate',     label:'Liftgate',     l:78, t:20, w:8,  h:58},
-  {id:'rear-bumper',  label:'Rear bumper',  l:87, t:18, w:7,  h:62},
-  {id:'rf-fender',    label:'RF fender',    l:14, t:2,  w:18, h:18},
-  {id:'rf-door',      label:'RF door',      l:33, t:2,  w:19, h:18},
-  {id:'rr-door',      label:'RR door',      l:52, t:2,  w:17, h:18},
-  {id:'rq-panel',     label:'R quarter',    l:69, t:2,  w:14, h:18},
-  {id:'lf-fender',    label:'LF fender',    l:14, t:80, w:18, h:18},
-  {id:'lf-door',      label:'LF door',      l:33, t:80, w:19, h:18},
-  {id:'lr-door',      label:'LR door',      l:52, t:80, w:17, h:18},
-  {id:'lq-panel',     label:'L quarter',    l:69, t:80, w:14, h:18},
+  {id:'rear-bumper',  label:'Rear bumper',  cx:9,  cy:49},
+  {id:'windshield',   label:'Windshield',   cx:61, cy:49},
+  {id:'front-bumper', label:'Front bumper', cx:89, cy:49},
+  {id:'lq-panel',     label:'L quarter',    cx:24, cy:11},
+  {id:'lr-door',      label:'LR door',      cx:39, cy:11},
+  {id:'lf-door',      label:'LF door',      cx:58, cy:11},
+  {id:'lf-fender',    label:'LF fender',    cx:77, cy:11},
+  {id:'rq-panel',     label:'R quarter',    cx:24, cy:89},
+  {id:'rr-door',      label:'RR door',      cx:39, cy:89},
+  {id:'rf-door',      label:'RF door',      cx:58, cy:89},
+  {id:'rf-fender',    label:'RF fender',    cx:77, cy:89},
 ];
 
 // ============================================================================
@@ -288,31 +319,117 @@ async function loadMakeData(brand){
 // ============================================================================
 // VIN DECODE (NHTSA — free, partial ADAS data)
 // ============================================================================
-async function decodeVin(){
-  const vin=document.getElementById('vinIn').value.trim();
-  const st=document.getElementById('vinStatus');
-  if(vin.length!==17){st.className='vin-status vin-err';st.textContent='VIN must be exactly 17 characters';return;}
-  st.className='vin-status vin-loading';st.textContent='Decoding via NHTSA...';
+// VIN check-digit validation (ISO 3779). Pos 9 (index 8) is a weighted-sum checksum.
+const VIN_TRANSLIT = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,J:1,K:2,L:3,M:4,N:5,P:7,R:9,S:2,T:3,U:4,V:5,W:6,X:7,Y:8,Z:9,'0':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9};
+const VIN_WEIGHTS = [8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2];
+
+function vinCheckDigitValid(vin){
+  if(!/^[A-HJ-NPR-Z0-9]{17}$/.test(vin)) return false;
+  let sum = 0;
+  for(let i=0;i<17;i++) sum += VIN_TRANSLIT[vin[i]] * VIN_WEIGHTS[i];
+  const rem = sum % 11;
+  return vin[8] === (rem === 10 ? 'X' : String(rem));
+}
+
+// Common OCR character confusions seen in scan-tool PDFs.
+// D/0 deliberately omitted — they don't look alike in real scan fonts and
+// including the swap caused false-positive rescue VINs (e.g. 5T0... matching
+// trailer manufacturers when the source VIN had a real D).
+const VIN_OCR_SWAPS = {
+  'S':['5'],'5':['S'],
+  'B':['8'],'8':['B'],
+  'Z':['2'],'2':['Z'],
+  'G':['6'],'6':['G']
+};
+
+// Generate candidate VINs that pass check-digit validation, ordered by fewest substitutions.
+function vinRescueCandidates(raw, maxSubs=3){
+  // First apply hard substitutions for characters that are not valid in VINs (I, O, Q).
+  const seed = raw.toUpperCase().replace(/I/g,'1').replace(/O/g,'0').replace(/Q/g,'0');
+  const found = [];
+  const seen = new Set();
+  function recur(v, subs, startIdx){
+    const key = v+':'+subs;
+    if(seen.has(key)) return;
+    seen.add(key);
+    if(vinCheckDigitValid(v) && !found.find(f=>f.vin===v)){
+      found.push({vin:v, subs});
+    }
+    if(subs >= maxSubs) return;
+    for(let i=startIdx;i<17;i++){
+      const alts = VIN_OCR_SWAPS[v[i]];
+      if(!alts) continue;
+      for(const a of alts){
+        recur(v.slice(0,i)+a+v.slice(i+1), subs+1, i+1);
+      }
+    }
+  }
+  recur(seed, 0, 0);
+  return found.sort((a,b)=>a.subs-b.subs).map(f=>f.vin);
+}
+
+async function fetchVinData(vin){
   try{
-    const r=await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/'+vin+'?format=json');
-    const j=await r.json();const v=j.Results[0];
-    const yr=v.ModelYear,mk=v.Make,mo=v.Model,trim=v.Trim;
-    if(!yr||!mk){st.className='vin-status vin-err';st.textContent='Could not decode — check VIN and try again';return;}
-    st.className='vin-status vin-ok';
-    st.textContent='✓ '+yr+' '+mk+' '+mo+(trim?' · '+trim:'');
-    const ySel=document.getElementById('yearSel');
-    for(let i=0;i<ySel.options.length;i++){if(ySel.options[i].value==yr){ySel.selectedIndex=i;break;}}
-    const mSel=document.getElementById('makeSel');
-    for(let i=0;i<mSel.options.length;i++){if(mSel.options[i].value.toUpperCase()===mk.toUpperCase()){mSel.selectedIndex=i;break;}}
-    populateModels();
-    const moSel=document.getElementById('modelSel');
-    for(let i=0;i<moSel.options.length;i++){if(moSel.options[i].value.toUpperCase()===mo.toUpperCase()){moSel.selectedIndex=i;break;}}
-    const det=document.getElementById('vehDetails');
-    det.style.display='block';
-    det.innerHTML='<b>Engine:</b> '+(v.DisplacementL?parseFloat(v.DisplacementL).toFixed(1)+'L ':'')+(v.FuelTypePrimary||'')+' &nbsp;|&nbsp; <b>Drive:</b> '+(v.DriveType||'—');
-    autoDetectSystems(v);
-    onVehicleChanged();
-  }catch(e){st.className='vin-status vin-err';st.textContent='API error — check connection';}
+    const r = await fetch('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValuesExtended/'+vin+'?format=json');
+    const j = await r.json();
+    const v = j.Results && j.Results[0];
+    if(!v || !v.ModelYear || !v.Make) return null;
+    // Reject NHTSA hits for trailers/motorcycles/etc. — these only show up via
+    // OCR-rescue false positives, not real shop work.
+    const vt = (v.VehicleType||'').toUpperCase();
+    if(vt.includes('TRAILER') || vt.includes('MOTORCYCLE')) return null;
+    return v;
+  }catch(e){ return null; }
+}
+
+async function decodeVin(){
+  const vin = document.getElementById('vinIn').value.trim();
+  const st = document.getElementById('vinStatus');
+  if(vin.length!==17){st.className='vin-status vin-err';st.textContent='VIN must be exactly 17 characters';return;}
+  st.className='vin-status vin-loading';
+  st.textContent='Decoding via NHTSA...';
+
+  let v = await fetchVinData(vin);
+  let finalVin = vin;
+
+  if(!v){
+    // Try OCR rescue: candidates passing check digit, fewest-substitutions first.
+    const candidates = vinRescueCandidates(vin, 3);
+    if(candidates.length){
+      st.textContent='Decode failed — trying '+candidates.length+' OCR-rescue candidate'+(candidates.length>1?'s':'')+'…';
+      for(const cand of candidates){
+        if(cand === vin) continue;
+        v = await fetchVinData(cand);
+        if(v){ finalVin = cand; break; }
+      }
+    }
+  }
+
+  if(!v){ st.className='vin-status vin-err'; st.textContent='Could not decode — check VIN and try again'; return; }
+
+  if(finalVin !== vin){
+    document.getElementById('vinIn').value = finalVin;
+    st.className = 'vin-status vin-ok';
+    st.innerHTML = '✓ '+v.ModelYear+' '+v.Make+' '+v.Model+(v.Trim?' · '+v.Trim:'')
+      +' <span style="color:#888">(OCR corrected: '+vin+' → '+finalVin+')</span>';
+  } else {
+    st.className = 'vin-status vin-ok';
+    st.textContent = '✓ '+v.ModelYear+' '+v.Make+' '+v.Model+(v.Trim?' · '+v.Trim:'');
+  }
+
+  const yr=v.ModelYear, mk=v.Make, mo=v.Model;
+  const ySel=document.getElementById('yearSel');
+  for(let i=0;i<ySel.options.length;i++){if(ySel.options[i].value==yr){ySel.selectedIndex=i;break;}}
+  const mSel=document.getElementById('makeSel');
+  for(let i=0;i<mSel.options.length;i++){if(mSel.options[i].value.toUpperCase()===mk.toUpperCase()){mSel.selectedIndex=i;break;}}
+  populateModels();
+  const moSel=document.getElementById('modelSel');
+  for(let i=0;i<moSel.options.length;i++){if(moSel.options[i].value.toUpperCase()===mo.toUpperCase()){moSel.selectedIndex=i;break;}}
+  const det=document.getElementById('vehDetails');
+  det.style.display='block';
+  det.innerHTML='<b>Engine:</b> '+(v.DisplacementL?parseFloat(v.DisplacementL).toFixed(1)+'L ':'')+(v.FuelTypePrimary||'')+' &nbsp;|&nbsp; <b>Drive:</b> '+(v.DriveType||'—');
+  autoDetectSystems(v);
+  onVehicleChanged();
 }
 
 function autoDetectSystems(v){
@@ -330,6 +447,20 @@ function autoDetectSystems(v){
     else if(toggles[s] === false){el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);}
   });
   document.getElementById('sysNote').innerHTML='Auto-detected from VIN. <b>Verify with visual inspection</b> — NHTSA data is partial and trim-dependent equipment may vary.';
+}
+
+// After a make's JSON loads, default-off any system toggle that the make has no
+// components for. Keeps toggles from appearing active when no calibration data
+// exists for that system on that brand (e.g. Honda has no front corner radar).
+function applyMakeSpecificDefaults(makeData){
+  const supported = new Set((makeData.components||[]).map(c=>c.system));
+  document.querySelectorAll('.sys-tog').forEach(el=>{
+    const s = el.dataset.sys;
+    if(!supported.has(s)){
+      el.classList.remove('on'); el.classList.add('off');
+      activeSystems.delete(s);
+    }
+  });
 }
 
 // ============================================================================
@@ -350,8 +481,9 @@ async function onVehicleChanged(){
 
   currentMakeData = await loadMakeData(mk);
   if(currentMakeData){
-    m.className='veh-match ok';
-    m.innerHTML='✓ OEM calibration data loaded for '+mk+' · '+currentMakeData.components.length+' components · Source: '+currentMakeData.source.document;
+    m.className='veh-match';
+    m.textContent='';
+    applyMakeSpecificDefaults(currentMakeData);
   } else {
     m.className='veh-match warn';
     m.innerHTML='⚠ No OEM calibration data on file for '+mk+'. Add makes/'+ (BRAND_TO_MAKE_FILE[mk]||mk.toLowerCase()) +'.json to enable. Refer to OEM service information for this vehicle.';
@@ -369,10 +501,8 @@ function buildZones(){
   ZONE_DEFS.forEach(z=>{
     const el=document.createElement('div');
     el.className='zone'+(activeZones.has(z.id)?' hit':'');
-    el.style.left=(z.l/100*iw)+'px';
-    el.style.top=(z.t/100*ih)+'px';
-    el.style.width=(z.w/100*iw)+'px';
-    el.style.height=(z.h/100*ih)+'px';
+    el.style.left=(z.cx/100*iw)+'px';
+    el.style.top=(z.cy/100*ih)+'px';
     el.innerHTML='<span class="zone-tip">'+z.label+'</span>';
     el.addEventListener('click',()=>toggleZone(z.id,el));
     div.appendChild(el);
@@ -389,24 +519,176 @@ function toggleZone(id,el){
 }
 window.addEventListener('resize',buildZones);
 
+// Pairs that are mutually exclusive — turning one on turns its counterpart off.
+// Rationale: a vehicle with surround view uses the same rear image feed as its
+// backup camera; it doesn't separately have a standalone rear-camera calibration.
+const MUTEX_PAIRS = {
+  'surround': 'rear-camera',
+  'rear-camera': 'surround'
+};
+
 function toggleSys(el){
   const s=el.dataset.sys;
-  if(el.classList.contains('on')){el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);}
-  else{el.classList.remove('off');el.classList.add('on');activeSystems.add(s);}
+  if(el.classList.contains('on')){
+    el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);
+  } else {
+    el.classList.remove('off');el.classList.add('on');activeSystems.add(s);
+    const counterpart = MUTEX_PAIRS[s];
+    if(counterpart){
+      const other = document.querySelector('.sys-tog[data-sys="'+counterpart+'"]');
+      if(other && other.classList.contains('on')){
+        other.classList.remove('on');other.classList.add('off');
+        activeSystems.delete(counterpart);
+      }
+    }
+  }
 }
 
 // ============================================================================
-// SCAN PDF UPLOAD
+// SCAN PDF UPLOAD — parse for VIN + modules, auto-fill Steps 1 & 3
 // ============================================================================
-function onScanPdfChanged(){
+const MODULE_PATTERNS = {
+  'front-radar':        [/distronic/i,/\bacc\b[^a-z]/i,/adaptive cruise/i,/millimeter wave radar/i,/front radar/i,/long range radar/i,/cruise control module/i,/icc\b/i,/radar sensor/i,/front assist/i,/\bccm\b/i],
+  'front-corner-radar': [/front corner radar/i,/front side radar/i,/\bcorner radar/i,/short range radar.{0,30}front/i,/srsnv/i],
+  'front-camera':       [/forward recognition camera/i,/multipurpose camera/i,/lane depart/i,/lane keep/i,/\beyesight/i,/stereo camera/i,/ipma/i,/image processing module/i,/fcw.?ldw/i,/\blda\b/i,/\blka\b/i,/driver assistance.{0,20}camera/i,/windshield camera/i,/driving support camera/i,/autonomous driving camera/i],
+  'bsd':                [/blind spot/i,/\bbsm\b/i,/\bbsi\b/i,/\bbsd\b/i,/lane change assist/i,/side object sensor/i,/rear side radar/i,/\bsos[lr]?\b/i],
+  'rear-camera':        [/rear view camera/i,/rearview camera/i,/back.?up camera/i,/reverse camera/i,/park assist monitor/i,/rear television camera/i],
+  'surround':           [/around view/i,/surround view/i,/\b360.{0,15}camera/i,/panoramic view/i,/\bpvm\b/i,/\bavm\b/i,/multi.?view camera/i,/bird.?s.?eye/i,/top view/i],
+  'park-assist':        [/parking assist/i,/park assist/i,/parking sensor/i,/clearance sonar/i,/ultrasonic sensor/i,/\bsonar\b/i,/parking support/i,/\bpdc\b/i,/intelligent clearance/i,/ics\b/i],
+  'occupant':           [/occupant classification/i,/occupant detection/i,/\bocs\b/i,/\bocm\b/i,/passenger classification/i,/weight sensor/i,/seat weight/i,/passenger presence/i,/airbag control/i],
+};
+
+async function extractPdfText(file, onProgress){
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  let text = '';
+  for(let i=1;i<=pdf.numPages;i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(it=>it.str).join(' ')+'\n';
+  }
+  // If the PDF has no text layer (image-based scan), fall back to OCR
+  if(text.replace(/\s+/g,'').length < 50){
+    if(typeof Tesseract === 'undefined'){
+      throw new Error('PDF has no text layer and OCR engine is not loaded (check internet connection)');
+    }
+    onProgress && onProgress('Image-based PDF detected — running OCR (this may take 15-45 seconds)…');
+    text = await ocrPdf(pdf, onProgress);
+  }
+  return text;
+}
+
+async function ocrPdf(pdf, onProgress){
+  let text = '';
+  for(let i=1;i<=pdf.numPages;i++){
+    onProgress && onProgress('Running OCR on page '+i+' of '+pdf.numPages+'…');
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({scale:2});
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({canvasContext: canvas.getContext('2d'), viewport}).promise;
+    const res = await Tesseract.recognize(canvas, 'eng');
+    text += res.data.text + '\n';
+  }
+  return text;
+}
+
+function findVinInText(text){
+  // Valid VIN chars exclude I, O, Q. 17 chars total. Disallow all-numeric (not a VIN).
+  const isValidVin = v => /^[A-HJ-NPR-Z0-9]{17}$/.test(v) && !/^\d{17}$/.test(v);
+  // OCR sometimes reads letters as lookalikes; try to rescue with substitutions.
+  const rescueOcr = v => v.replace(/I/g,'1').replace(/O/g,'0').replace(/Q/g,'0');
+  const U = text.toUpperCase();
+
+  // 1) Look near a "VIN:" label, which most scan reports have
+  const labeled = U.match(/VIN(?:\s*(?:NUMBER|NO|#))?[:\s]+([A-Z0-9][A-Z0-9\s\-]{17,40})/);
+  if(labeled){
+    const cleaned = labeled[1].replace(/[\s\-]/g,'').slice(0,17);
+    if(cleaned.length === 17){
+      if(isValidVin(cleaned)) return cleaned;
+      const fixed = rescueOcr(cleaned);
+      if(isValidVin(fixed)) return fixed;
+    }
+  }
+
+  // 2) Any 17-char sequence of VIN-valid chars
+  const strict = (U.match(/\b[A-HJ-NPR-Z0-9]{17}\b/g)||[]).filter(isValidVin);
+  if(strict.length) return strict[0];
+
+  // 3) Any 17-char alnum sequence (scoop up OCR-garbled VINs), then rescue
+  const loose = U.match(/\b[A-Z0-9]{17}\b/g) || [];
+  for(const v of loose){
+    const fixed = rescueOcr(v);
+    if(isValidVin(fixed)) return fixed;
+  }
+  return null;
+}
+
+function detectModulesFromText(text){
+  const found = new Set();
+  for(const [sys,patterns] of Object.entries(MODULE_PATTERNS)){
+    for(const re of patterns){ if(re.test(text)){ found.add(sys); break; } }
+  }
+  return found;
+}
+
+function applyDetectedSystems(foundSet){
+  document.querySelectorAll('.sys-tog').forEach(el=>{
+    const s = el.dataset.sys;
+    if(foundSet.has(s)){el.classList.remove('off');el.classList.add('on');activeSystems.add(s);}
+    else {el.classList.remove('on');el.classList.add('off');activeSystems.delete(s);}
+  });
+}
+
+const SYS_LABELS = {
+  'front-camera':'Forward camera','front-radar':'Front radar','bsd':'Blind spot',
+  'rear-camera':'Rear camera','front-corner-radar':'Front corner radar',
+  'surround':'Surround view','park-assist':'Park assist','occupant':'Occupant','other':'HUD/other'
+};
+
+async function onScanPdfChanged(){
   const input = document.getElementById('scanPdf');
   const status = document.getElementById('scanPdfStatus');
   if(!input.files || !input.files[0]){scanPdfFile=null;status.textContent='';return;}
   const f = input.files[0];
   scanPdfFile = f;
   const sizeKB = (f.size/1024).toFixed(0);
-  status.innerHTML = '✓ <b>'+f.name+'</b> ('+sizeKB+' KB) attached. Will be noted on the report.';
-  status.style.color = '#1D9E75';
+  status.style.color = '#444';
+  status.innerHTML = 'Parsing <b>'+f.name+'</b> ('+sizeKB+' KB)…';
+
+  if(typeof pdfjsLib==='undefined'){
+    status.style.color='#B00';
+    status.innerHTML='⚠ PDF parser unavailable (check internet connection). File attached but not parsed.';
+    return;
+  }
+
+  try{
+    const onProgress = (msg)=>{
+      status.style.color='#444';
+      status.innerHTML = msg+'<br><span style="color:#888">File: '+f.name+' ('+sizeKB+' KB)</span>';
+    };
+    const text = await extractPdfText(f, onProgress);
+    const vin = findVinInText(text);
+
+    let lines = [];
+    if(vin){
+      document.getElementById('vinIn').value = vin;
+      lines.push('✓ VIN detected: <b>'+vin+'</b> — decoding… (verify year/make/model after decode; OCR can misread a character)');
+      status.innerHTML = lines.join('<br>');
+      await decodeVin();
+    } else {
+      lines.push('⚠ No VIN found in PDF. Enter manually above.');
+    }
+
+    lines.push('<span style="color:#666">Confirm installed systems manually in Step 4 — automatic module detection is disabled in this version.</span>');
+    lines.push('<span style="color:#888">File <b>'+f.name+'</b> ('+sizeKB+' KB) attached for documentation.</span>');
+    status.style.color='#1D9E75';
+    status.innerHTML = lines.join('<br>');
+  }catch(err){
+    status.style.color='#B00';
+    status.innerHTML='⚠ Could not parse PDF ('+err.message+'). File attached but not auto-read.';
+  }
 }
 
 function clearScanPdf(){
@@ -450,7 +732,6 @@ function renderComponent(c, src){
 
   let calNoteHtml = c.calibration_note ? '<div class="cal-note">'+c.calibration_note+'</div>' : '';
   let eqHtml = c.equipment_required ? '<div class="cal-eq">Equipment required: '+c.equipment_required+'</div>' : '';
-  let srcHtml = src ? '<div class="cal-source"><b>Source:</b> '+src.document+(src.file?' · <i>'+src.file+'</i>':'')+'</div>' : '';
 
   return '<div class="cal-item">'
     + '<div class="cal-hdr">'
@@ -463,7 +744,6 @@ function renderComponent(c, src){
     + triggersHtml
     + addNotesHtml
     + calNoteHtml
-    + srcHtml
     + '</div>';
 }
 
@@ -478,12 +758,21 @@ function generateReport(){
 
   if(currentYMM){
     const zoneLabels = [...activeZones].map(id=>ZONE_DEFS.find(z=>z.id===id)?.label||id).join(' · ');
+    const vinValue = document.getElementById('vinIn').value.trim();
+    const vinLine = vinValue ? '<div style="font-size:12px;color:#555;margin-top:2px"><b>VIN:</b> '+vinValue+'</div>' : '';
     let scanHtml = '';
     if(scanPdfFile){
       const ts = new Date().toLocaleString();
       scanHtml = '<div style="font-size:11.5px;color:#1D9E75;margin-top:4px"><b>Pre-scan attached:</b> '+scanPdfFile.name+' · Uploaded '+ts+'</div>';
     }
-    vehHeader.innerHTML = '<div class="veh-header"><b>'+currentYMM.year+' '+currentYMM.make+' '+currentYMM.model+'</b><div style="font-size:12px;color:#555;margin-top:2px">Damage zones: '+zoneLabels+'</div>'+scanHtml+'</div>';
+    vehHeader.innerHTML =
+      '<div class="veh-header">'
+      + '<b>'+currentYMM.year+' '+currentYMM.make+' '+currentYMM.model+'</b>'
+      + vinLine
+      + '<div style="font-size:12px;color:#555;margin-top:2px">Damage zones: '+zoneLabels+'</div>'
+      + scanHtml
+      + '</div>'
+      + buildReportDiagram();
   }
 
   if(!currentMakeData){
@@ -531,17 +820,28 @@ function generateReport(){
 
   // Fine print
   let fpHtml = '';
-  if(currentMakeData){
-    fpHtml = '<b>Source document:</b> '+currentMakeData.source.document;
-    if(currentMakeData.source.file) fpHtml += ' (<i>'+currentMakeData.source.file+'</i>)';
-    fpHtml += '<br>';
-    if(currentMakeData.general_requirements) fpHtml += '<br><b>General requirements:</b> '+currentMakeData.general_requirements+'<br>';
+  if(currentMakeData && currentMakeData.general_requirements){
+    fpHtml = '<b>General requirements:</b> '+currentMakeData.general_requirements+'<br>';
   }
   fpHtml += '<br>All calibrations performed with OEM scan tools and OEM software. Trigger language is reproduced from OEM service information and position statements. This report is informational; always validate against current OEM service information for the specific VIN.';
   finePrint.innerHTML = fpHtml;
 
   document.getElementById('resultsSection').style.display='block';
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildReportDiagram(){
+  if(!activeZones.size) return '';
+  let dots='';
+  ZONE_DEFS.forEach(z=>{
+    if(activeZones.has(z.id)){
+      dots += '<div class="rd-dot" style="left:'+z.cx+'%;top:'+z.cy+'%"></div>';
+    }
+  });
+  return '<div class="report-diagram">'
+       + '<img src="car.png" alt="Vehicle damage diagram"/>'
+       + '<div class="report-diagram-overlay">'+dots+'</div>'
+       + '</div>';
 }
 
 function printReport(){window.print();}

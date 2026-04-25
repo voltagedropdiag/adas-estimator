@@ -2,12 +2,12 @@
   "make": "Honda",
   "includes_brands": ["Honda", "Acura"],
   "source": {
-    "document": "Honda Aiming Driving Support Systems Job Aid (June 2021, Version 9)",
-    "file": "Honda_job_aid.pdf",
+    "document": "Honda Aiming Driving Support Systems Job Aid (March 2021, Version 6)",
+    "file": "makes/sources/honda/honda_job_aid_v6_march_2021.pdf",
     "portal": "techinfo.honda.com",
-    "applies_to_note": "All models with millimeter wave radar, FCW/LDW camera, multipurpose camera, LaneWatch camera, or BSI radar."
+    "applies_to_note": "All models with millimeter wave radar, FCW/LDW camera, multipurpose camera, multi-view camera, or BSI radar. Honda does not equip vehicles with front corner radars."
   },
-  "general_requirements": "Proper wheel alignment, body structural alignment, and camera/radar alignment are critical to driving support system functions. If aiming a radar or camera is necessary due to a collision, a four-wheel alignment check must be performed first and corrected prior to aiming any camera or radar. Always refer to the model-specific service manual along with this job aid to determine when the radar or camera should be aimed.",
+  "general_requirements": "Proper wheel alignment, body structural alignment, and camera/radar alignment are critical to driving support system functions. If aiming a radar or camera is necessary due to a collision, a four-wheel alignment check must be performed first and corrected prior to aiming any camera or radar.",
 
   "components": [
     {
@@ -19,12 +19,12 @@
         {"model": "Civic", "year_start": 2022, "year_end": 2030, "reason": "Per Honda job aid: 2022+ Civic is not equipped with a millimeter wave radar. Driving support functions are integrated into the multipurpose camera unit."},
         {"model": "HR-V", "year_start": 2023, "year_end": 2030, "reason": "Per Honda job aid: 2023+ HR-V (3rd gen) is not equipped with a millimeter wave radar. Driving support functions are integrated into the multipurpose camera unit."}
       ],
-      "calibration_note": "Requires vertical and horizontal adjustment. Adjustment performed using i-HDS scan tool and Honda special tools (Reflector Set, Alignment Set, Stand). Replacement unit must be ordered by VIN.",
-      "trigger_lead": "Aim the millimeter wave radar when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Millimeter wave radar unit was removed and installed",
-        "Millimeter wave radar unit was replaced",
-        "After a collision repair that would require at least a front bumper fascia repair within 300 mm of the millimeter wave radar unit",
+        "Millimeter wave radar unit is removed and installed",
+        "Millimeter wave radar unit is replaced",
+        "After a collision repair that would require at least a front bumper fascia repair within 300 mm of the radar unit",
         "After a collision repair requiring a structural body repair (any damage beyond minor cosmetic abrasions to the welded, riveted, or bonded parts of the main unibody, bumper reinforcements, door intrusion beams, or bolt-on front bulkheads)",
         "After a Supplemental Restraint System (SRS) deployment",
         "DTC P2583-54 (millimeter wave radar aiming incomplete) is set",
@@ -37,13 +37,13 @@
       "system": "front-camera",
       "location": "Windshield, above the rearview mirror",
       "zones": ["windshield", "front-bumper"],
-      "calibration_note": "Depending on model, requires static and/or dynamic aiming using i-HDS. Replacement windshield must be Honda genuine — aftermarket windshields will cause aiming failure or abnormal operation. Replacement camera must be ordered by VIN.",
-      "trigger_lead": "Aim the multipurpose camera or FCW/LDW camera when any of the following apply:",
+      "calibration_note": "Replacement windshield must be Honda genuine — aftermarket windshields will cause aiming failure or abnormal system operation.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "Windshield was removed and installed",
-        "Windshield was replaced (replacement must be Honda genuine — aftermarket will cause aiming failure or abnormal system operation)",
-        "Multipurpose camera unit or FCW/LDW camera unit was removed and installed",
-        "Multipurpose camera unit or FCW/LDW camera unit was replaced",
+        "Windshield is removed and installed",
+        "Windshield is replaced",
+        "Multipurpose camera unit or FCW/LDW camera unit is removed and installed",
+        "Multipurpose camera unit or FCW/LDW camera unit is replaced",
         "After a collision repair requiring a structural body repair",
         "After a Supplemental Restraint System (SRS) deployment",
         "DTC B2A60-52 (dynamic camera aiming incomplete) is set",
@@ -51,15 +51,40 @@
       ]
     },
     {
+      "component": "Multi View Camera System (Surround View)",
+      "system": "surround",
+      "location": "Four cameras: front grille, rear (rearview camera), and left/right outside mirrors",
+      "zones": ["front-bumper", "rear-bumper", "liftgate", "lf-door", "rf-door"],
+      "calibration_note": "Do only the camera aiming applicable to the component that was removed, adjusted, or damaged. Mirror housing lower cover is a trigger on some models — refer to model service info.",
+      "trigger_lead": "Calibration is required when:",
+      "triggers": [
+        "Front camera is replaced, removed, or reinstalled",
+        "Rearview camera is replaced, removed, or reinstalled",
+        "Left or right side camera is replaced, removed, or reinstalled",
+        "Power mirror assembly is replaced, removed, or reinstalled",
+        "Mirror housing lower cover is replaced, removed, or reinstalled (some models)",
+        "Front bumper is replaced, removed, or reinstalled",
+        "Front grille is replaced, removed, or reinstalled",
+        "Driver's or front passenger's door is replaced, removed, or reinstalled",
+        "Tailgate is replaced, removed, or reinstalled",
+        "Trunk is replaced, removed, or reinstalled",
+        "Driver's or front passenger's door has been adjusted",
+        "Tailgate has been adjusted",
+        "Trunk has been adjusted",
+        "After any collision repairs to the driver's or front passenger's door",
+        "DTC B14B3-54 (camera aiming incomplete) is set"
+      ]
+    },
+    {
       "component": "Blind Spot Information (BSI) Radar",
       "system": "bsd",
       "location": "Left and right sides of the rear body panel, behind the rear bumper (mounting position varies by model)",
       "zones": ["rear-bumper", "lq-panel", "rq-panel"],
-      "calibration_note": "Static inspection using laser with targets positioned left and right rear of vehicle. If laser points within target boundaries, aim is good. If not, secondary inspection required to check radar mounting area for damage. If BSI radar unit was replaced due to damage, the BSI Radar Unit Mounting Area Check procedure must be performed before installing the new unit. 2022+ Civic uses a different procedure — see Blind Spot Information (BSI) System Learning Value Reset.",
-      "trigger_lead": "Inspect BSI radar aiming when any of the following apply:",
+      "calibration_note": "If the BSI radar unit was replaced due to damage, the BSI Radar Unit Mounting Area Check is required before installing the new unit. 2022+ Civic uses the Blind Spot Information (BSI) System Learning Value Reset procedure.",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "BSI radar unit was removed and installed",
-        "BSI radar unit was replaced",
+        "BSI radar unit is removed and installed",
+        "BSI radar unit is replaced",
         "After replacing or repairing the body panel(s) where the BSI radar unit is mounted",
         "After a collision repair requiring a structural body repair at the rear of the vehicle",
         "DTC B18B8 (left side BSI radar unit azimuth off alignment) is set",
@@ -68,17 +93,30 @@
     },
     {
       "component": "LaneWatch Camera",
-      "system": "bsd",
+      "system": "lanewatch",
       "location": "Passenger side (right) power mirror assembly",
       "zones": ["rf-door", "rf-fender"],
-      "calibration_note": "Static aiming using a stationary target positioned along the right-rear side of the vehicle. i-HDS not required — system uses audio/audio-navigation unit with LaneWatch camera switch.",
-      "trigger_lead": "Aim the LaneWatch camera when any of the following apply:",
+      "calibration_note": "",
+      "trigger_lead": "Calibration is required when:",
       "triggers": [
-        "LaneWatch camera unit was replaced or removed/installed",
-        "Passenger side power mirror assembly was replaced or removed/installed",
-        "Front passenger door was replaced or removed/installed",
+        "LaneWatch camera unit is replaced or removed and installed",
+        "Passenger side power mirror assembly is replaced or removed and installed",
+        "Front passenger door is replaced or removed and installed",
         "After adjusting the front passenger door",
         "After any collision repairs to the door assembly"
+      ]
+    },
+    {
+      "component": "Front Passenger's Weight Sensor (Occupant Classification)",
+      "system": "occupant",
+      "location": "Built into the front passenger seat cushion frame",
+      "zones": ["*"],
+      "calibration_note": "Weight sensor is built into the seat cushion frame. An output check is required after any vehicle collision, regardless of airbag or seat belt tensioner deployment. Weight sensor initialization is required any time the seat cushion frame or the SRS unit is serviced.",
+      "trigger_lead": "Check / calibration is required when:",
+      "triggers": [
+        "Vehicle is in for repair after any collision (regardless of whether airbags or seat belt tensioners deployed)",
+        "The front passenger's seat cushion frame is replaced or removed",
+        "The SRS unit is replaced or updated"
       ]
     }
   ]
